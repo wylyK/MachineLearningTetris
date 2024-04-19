@@ -176,16 +176,24 @@ namespace SimplifiedTetris {
   };
 
   class Game {
-    private:
     public:
-      Tetromino boardState[20][10] = {};
+      class Board {
+        public:
+          Tetromino board[20][10] = {};
+      };
+    private:
+      Board board;
+      Tetromino fallingPiece;
       Tetromino holdPiece = Tetromino::null;
       Tetromino nextQueue[6];
       Bag bag;
     public:
       typedef Bag::seed_type seed_type;
-      Game(seed_type);
+      explicit Game(seed_type);
+      Tetromino getFalling() const { return fallingPiece; };
+      Board getBoard() const { return board; };
       Tetromino getNext();
+      std::vector<std::size_t[2]> getPlacements();
   };
 }
 

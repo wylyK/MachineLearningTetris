@@ -26,6 +26,7 @@ namespace SimplifiedTetris {
   Game::Game(Game::seed_type seed) :
     bag(seed)
   {
+      fallingPiece = bag.getNext();
       for (Tetromino & t : nextQueue) {
           t = bag.getNext();
       }
@@ -38,6 +39,10 @@ namespace SimplifiedTetris {
       }
       nextQueue[5] = bag.getNext();
       return nextTetromino;
+  }
+
+  std::vector<std::size_t[2]> Game::getPlacements() {
+      // TODO
   }
 
 }

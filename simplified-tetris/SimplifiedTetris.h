@@ -18,29 +18,25 @@ namespace SimplifiedTetris {
       S = 6,
       Z = 7
   };
-  static Tetromino const pieces[7][4][4][4] = {
+  static constexpr Tetromino facings[7][4][4][4] = {
       // O
       { // O
           // N
-          {{Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
-           {Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
-           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
-           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null}},
+          {{Tetromino::null, Tetromino::O,    Tetromino::O},
+           {Tetromino::null, Tetromino::O,    Tetromino::O},
+           {Tetromino::null, Tetromino::null, Tetromino::null}},
           // E
-          {{Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
-           {Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
-           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
-           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null}},
+          {{Tetromino::null, Tetromino::O,    Tetromino::O},
+           {Tetromino::null, Tetromino::O,    Tetromino::O},
+           {Tetromino::null, Tetromino::null, Tetromino::null}},
           // S
-          {{Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
-           {Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
-           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
-           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null}},
+          {{Tetromino::null, Tetromino::O,    Tetromino::O},
+           {Tetromino::null, Tetromino::O,    Tetromino::O},
+           {Tetromino::null, Tetromino::null, Tetromino::null}},
           // W
-          {{Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
-           {Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
-           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
-           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null}},
+          {{Tetromino::null, Tetromino::O,    Tetromino::O},
+           {Tetromino::null, Tetromino::O,    Tetromino::O},
+           {Tetromino::null, Tetromino::null, Tetromino::null}}
       },
       // I
       {
@@ -64,7 +60,97 @@ namespace SimplifiedTetris {
            {Tetromino::null, Tetromino::I,    Tetromino::null, Tetromino::null},
            {Tetromino::null, Tetromino::I,    Tetromino::null, Tetromino::null},
            {Tetromino::null, Tetromino::I,    Tetromino::null, Tetromino::null}},
-      }
+      },
+      { // T
+          // N
+          {{Tetromino::null, Tetromino::T,    Tetromino::null},
+           {Tetromino::T,    Tetromino::T,    Tetromino::T},
+           {Tetromino::null, Tetromino::null, Tetromino::null}},
+          // E
+          {{Tetromino::null, Tetromino::T,    Tetromino::null},
+           {Tetromino::null, Tetromino::T,    Tetromino::T},
+           {Tetromino::null, Tetromino::T,    Tetromino::null}},
+          // S
+          {{Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::T,    Tetromino::T,    Tetromino::T},
+           {Tetromino::null, Tetromino::T,    Tetromino::null}},
+          // W
+          {{Tetromino::null, Tetromino::T,    Tetromino::null},
+           {Tetromino::T,    Tetromino::T,    Tetromino::null},
+           {Tetromino::null, Tetromino::T,    Tetromino::null}},
+      },
+      { // L
+          // N
+          {{Tetromino::null, Tetromino::null, Tetromino::L},
+           {Tetromino::L,    Tetromino::L,    Tetromino::L},
+           {Tetromino::null, Tetromino::null, Tetromino::null}},
+          // E
+          {{Tetromino::null, Tetromino::L,    Tetromino::null},
+           {Tetromino::null, Tetromino::L,    Tetromino::null},
+           {Tetromino::null, Tetromino::L,    Tetromino::L}},
+          // S
+          {{Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::L,    Tetromino::L,    Tetromino::L},
+           {Tetromino::L,    Tetromino::null, Tetromino::null}},
+          // W
+          {{Tetromino::L,    Tetromino::L,    Tetromino::null},
+           {Tetromino::null, Tetromino::L,    Tetromino::null},
+           {Tetromino::null, Tetromino::L,    Tetromino::null}},
+      },
+      { // J
+          // N
+          {{Tetromino::J,    Tetromino::null, Tetromino::null},
+           {Tetromino::J,    Tetromino::J,    Tetromino::J},
+           {Tetromino::null, Tetromino::null, Tetromino::null}},
+          // E
+          {{Tetromino::null, Tetromino::J,    Tetromino::J},
+           {Tetromino::null, Tetromino::J,    Tetromino::null},
+           {Tetromino::null, Tetromino::J,    Tetromino::null}},
+          // S
+          {{Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::J,    Tetromino::J,    Tetromino::J},
+           {Tetromino::null, Tetromino::null, Tetromino::J}},
+          // W
+          {{Tetromino::null, Tetromino::J,    Tetromino::null},
+           {Tetromino::null, Tetromino::J,    Tetromino::null},
+           {Tetromino::J,    Tetromino::J,    Tetromino::null}},
+      },
+      { // S
+          // N
+          {{Tetromino::null, Tetromino::S,    Tetromino::S},
+           {Tetromino::S,    Tetromino::S,    Tetromino::null},
+           {Tetromino::null, Tetromino::null, Tetromino::null}},
+          // E
+          {{Tetromino::null, Tetromino::S,    Tetromino::null},
+           {Tetromino::null, Tetromino::S,    Tetromino::S},
+           {Tetromino::null, Tetromino::null, Tetromino::S}},
+          // S
+          {{Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::null, Tetromino::S,    Tetromino::S},
+           {Tetromino::S,    Tetromino::S,    Tetromino::null}},
+          // W
+          {{Tetromino::S,    Tetromino::null, Tetromino::null},
+           {Tetromino::S,    Tetromino::S,    Tetromino::null},
+           {Tetromino::null, Tetromino::S,    Tetromino::null}},
+      },
+      { // Z
+          // N
+          {{Tetromino::Z,    Tetromino::Z,    Tetromino::null},
+           {Tetromino::null, Tetromino::Z,    Tetromino::Z},
+           {Tetromino::null, Tetromino::null, Tetromino::null}},
+          // E
+          {{Tetromino::null, Tetromino::null, Tetromino::Z},
+           {Tetromino::null, Tetromino::Z,    Tetromino::Z},
+           {Tetromino::null, Tetromino::Z,    Tetromino::null}},
+          // S
+          {{Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::Z,    Tetromino::Z,    Tetromino::null},
+           {Tetromino::null, Tetromino::Z,    Tetromino::Z}},
+          // W
+          {{Tetromino::null, Tetromino::Z,    Tetromino::null},
+           {Tetromino::Z,    Tetromino::Z,    Tetromino::null},
+           {Tetromino::Z,    Tetromino::null, Tetromino::null}},
+      },
   };
 
   class Bag {

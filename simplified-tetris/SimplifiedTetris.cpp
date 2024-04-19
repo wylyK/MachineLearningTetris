@@ -2,7 +2,7 @@
 
 namespace SimplifiedTetris {
 
-  Bag::Bag(std::mt19937_64::result_type seed) :
+  Bag::Bag(Bag::seed_type const seed) :
       urbg(seed)
   {
       refill();
@@ -21,6 +21,12 @@ namespace SimplifiedTetris {
       Tetromino const retVal = bag[next];
       ++next;
       return retVal;
+  }
+
+  Game::Game(Game::seed_type seed) :
+    bag(seed)
+  {
+      // TODO
   }
 
 }

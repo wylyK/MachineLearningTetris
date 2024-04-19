@@ -36,7 +36,8 @@ namespace SimplifiedTetris {
 
       void refill();
     public:
-      Bag(std::mt19937_64::result_type seed);
+      typedef std::mt19937_64::result_type seed_type;
+      Bag(seed_type);
       Tetromino getNext();
   };
 
@@ -46,8 +47,10 @@ namespace SimplifiedTetris {
       Tetromino boardState[18][10];
       Tetromino holdPiece = Tetromino::null;
       Tetromino nextQueue[6];
-      Tetromino bag[7];
+      Bag bag;
     public:
+      typedef Bag::seed_type seed_type;
+      Game(seed_type);
   };
 }
 

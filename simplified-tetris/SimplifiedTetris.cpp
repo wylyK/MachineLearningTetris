@@ -26,7 +26,18 @@ namespace SimplifiedTetris {
   Game::Game(Game::seed_type seed) :
     bag(seed)
   {
-      // TODO
+      for (Tetromino & t : nextQueue) {
+          t = bag.getNext();
+      }
+  }
+
+  Tetromino Game::getNext() {
+      Tetromino const nextTetromino = nextQueue[0];
+      for (size_t i = 0; i < 5; ++i) {
+          nextQueue[i] = nextQueue[i + 1];
+      }
+      nextQueue[5] = bag.getNext();
+      return nextTetromino;
   }
 
 }

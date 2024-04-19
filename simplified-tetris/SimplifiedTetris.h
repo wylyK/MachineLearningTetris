@@ -44,13 +44,14 @@ namespace SimplifiedTetris {
   class Game {
     private:
     public:
-      Tetromino boardState[18][10];
+      Tetromino boardState[18][10] = {};
       Tetromino holdPiece = Tetromino::null;
       Tetromino nextQueue[6];
       Bag bag;
     public:
       typedef Bag::seed_type seed_type;
       Game(seed_type);
+      Tetromino getNext();
   };
 }
 

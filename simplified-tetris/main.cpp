@@ -2,8 +2,8 @@
 #include "SimplifiedTetris.h"
 
 int main() {
-    SimplifiedTetris::Bag bag(5);
-    for (int i = 0; i < 30; ++i) {
-        std::cout << (int)bag.getNext() << std::endl;
+    SimplifiedTetris::Game game(5);
+    for (int i = 0; i < 50; ++i) {
+        std::cout << (int)game.getNext() << std::endl;
     }
 }

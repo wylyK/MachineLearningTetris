@@ -8,15 +8,63 @@
 #include <type_traits>
 
 namespace SimplifiedTetris {
-  enum class Tetromino : std::underlying_type_t<std::byte> {
+  enum Tetromino : std::underlying_type_t<std::byte> {
       null = 0,
-      I = 1,
-      J = 2,
-      L = 3,
-      O = 4,
-      S = 5,
-      Z = 6,
-      T = 7
+      O = 1,
+      I = 2,
+      T = 3,
+      L = 4,
+      J = 5,
+      S = 6,
+      Z = 7
+  };
+  static Tetromino const pieces[7][4][4][4] = {
+      // O
+      { // O
+          // N
+          {{Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
+           {Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
+           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null}},
+          // E
+          {{Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
+           {Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
+           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null}},
+          // S
+          {{Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
+           {Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
+           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null}},
+          // W
+          {{Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
+           {Tetromino::null, Tetromino::null, Tetromino::O, Tetromino::O},
+           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null}},
+      },
+      // I
+      {
+          // N
+          {{Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::I,    Tetromino::I,    Tetromino::I,    Tetromino::I},
+           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null}},
+          // E
+          {{Tetromino::null, Tetromino::null, Tetromino::I,    Tetromino::null},
+           {Tetromino::null, Tetromino::null, Tetromino::I,    Tetromino::null},
+           {Tetromino::null, Tetromino::null, Tetromino::I,    Tetromino::null},
+           {Tetromino::null, Tetromino::null, Tetromino::I,    Tetromino::null}},
+          // S
+          {{Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
+           {Tetromino::I,    Tetromino::I,    Tetromino::I,    Tetromino::I},
+           {Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null}},
+          // W
+          {{Tetromino::null, Tetromino::I,    Tetromino::null, Tetromino::null},
+           {Tetromino::null, Tetromino::I,    Tetromino::null, Tetromino::null},
+           {Tetromino::null, Tetromino::I,    Tetromino::null, Tetromino::null},
+           {Tetromino::null, Tetromino::I,    Tetromino::null, Tetromino::null}},
+      }
   };
 
   class Bag {

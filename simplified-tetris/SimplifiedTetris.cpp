@@ -52,8 +52,8 @@ namespace SimplifiedTetris {
       }
   }
 
-  std::vector<std::tuple<std::size_t, std::size_t, std::size_t>> Game::getPlacements() {
-      std::vector<std::tuple<std::size_t, std::size_t, std::size_t>> validPlacements;
+  std::vector<std::tuple<int, int, int>> Game::getPlacements() {
+      std::vector<std::tuple<int, int, int>> validPlacements;
       for (int f = 0; f < 4; ++f) {
           for (int pieceX = -2; pieceX <= 8; ++pieceX) {
               for (int pieceY = 21; pieceY > 0; --pieceY) {

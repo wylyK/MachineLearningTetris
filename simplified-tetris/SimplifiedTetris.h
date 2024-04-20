@@ -204,7 +204,7 @@ namespace SimplifiedTetris {
       Board getBoard() const { return board; };
       void printBoard() const;
       Tetromino getNext();
-      std::vector<std::tuple<std::size_t, std::size_t, std::size_t>> getPlacements();
+      std::vector<std::tuple<int, int, int>> getPlacements();
   };
 }
 

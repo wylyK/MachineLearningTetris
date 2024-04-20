@@ -58,6 +58,7 @@ namespace SimplifiedTetris {
           for (int pieceX = -2; pieceX <= 8; ++pieceX) {
               for (int pieceY = 21; pieceY > 0; --pieceY) {
                   bool locationValid = true;
+                  bool onFloor = false;
                   for (int subX = 0; subX < PIECE_SIZE[fallingPiece]; ++subX) {
                       for (int subY = 0; subY < PIECE_SIZE[fallingPiece]; ++subY) {
                           if (FACINGS[fallingPiece][f][subY][subX] == Tetromino::null) {
@@ -76,12 +77,15 @@ namespace SimplifiedTetris {
                               locationValid = false;
                               break;
                           }
+                          if (y == 0 || board.board[y - 1][x] != Tetromino::null) {
+                              onFloor = true;
+                          }
                       }
                       if (!locationValid) {
                           break;
                       }
                   }
-                  if (locationValid) {
+                  if (locationValid && onFloor) {
                       validPlacements.emplace_back(f, pieceX, pieceY);
                   }
               }

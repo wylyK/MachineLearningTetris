@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <array>
 #include <random>
+#include <tuple>
 #include <type_traits>
 
 namespace SimplifiedTetris {
@@ -18,7 +19,16 @@ namespace SimplifiedTetris {
       S = 6,
       Z = 7
   };
-  static constexpr Tetromino facings[7][4][4][4] = {
+  static constexpr int PIECE_SIZE[] = {
+      3, // O
+      4, // I
+      3, // T
+      3, // L
+      3, // J
+      3, // S
+      3 // Z
+  };
+  static constexpr Tetromino FACINGS[7][4][4][4] = {
       // O
       { // O
           // N
@@ -192,8 +202,9 @@ namespace SimplifiedTetris {
       explicit Game(seed_type);
       Tetromino getFalling() const { return fallingPiece; };
       Board getBoard() const { return board; };
+      void printBoard() const;
       Tetromino getNext();
-      std::vector<std::size_t[2]> getPlacements();
+      std::vector<std::tuple<std::size_t, std::size_t, std::size_t>> getPlacements();
   };
 }
 

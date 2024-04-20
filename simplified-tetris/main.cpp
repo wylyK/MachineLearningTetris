@@ -3,14 +3,14 @@
 
 int main() {
     SimplifiedTetris::Game game(5);
-    for (int i = 0; i < 50; ++i) {
-        std::cout << (int)game.getNext() << std::endl;
-    }
-    std::cout << "game state:" << std::endl;
-    for (int i = 0; i < 20; ++i) {
-        for (int j = 0; j < 10; ++j) {
-            std::cout << (int)game.boardState[i][j] << " ";
-        }
-        std::cout << std::endl;
+//    for (int i = 0; i < 50; ++i) {
+//        std::cout << (int)game.getNext() << std::endl;
+//    }
+    std::cout << (int)game.getFalling() << std::endl;
+    game.printBoard();
+    std::cout << std::endl << (int)game.getFalling() << std::endl << std::endl;
+    std::vector<std::tuple<std::size_t, std::size_t, std::size_t>> placements = game.getPlacements();
+    for (std::tuple<std::size_t, std::size_t, std::size_t> & placement : placements) {
+        std::cout << std::get<0>(placement) << ", " << std::get<1>(placement) << ", " << std::get<2>(placement) << std::endl;
     }
 }

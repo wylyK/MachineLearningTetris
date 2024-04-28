@@ -42,14 +42,18 @@ namespace SimplifiedTetris {
       return nextTetromino;
   }
 
-  void Game::printBoard() const {
-      std::cout << "game state:" << std::endl;
-      for (int i = 0; i < Board::HEIGHT; ++i) {
+  void Game::Board::print() const {
+      for (int i = Board::HEIGHT - 1; i >= 0; --i) {
           for (int j = 0; j < Board::WIDTH; ++j) {
-              std::cout << (int)board.board[i][j] << " ";
+              std::cout << (int)board[i][j] << " ";
           }
           std::cout << std::endl;
       }
+  }
+
+  void Game::printBoard() const {
+      std::cout << "game state:" << std::endl;
+      board.print();
   }
 
   std::vector<std::tuple<int, int, int>> Game::getPlacements() {

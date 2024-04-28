@@ -14,6 +14,8 @@ int main() {
 //        std::cout << std::get<0>(placement) << ", " << std::get<1>(placement) << ", " << std::get<2>(placement) << std::endl;
 //    }
 
-    std::game.previewMove(std::get<0>(placements[0]), std::get<1>(placements[0]),std::get<2>(placements[0]));
+    auto const newBoard = game.previewMove(std::get<0>(placements[0]), std::get<1>(placements[0]),std::get<2>(placements[0]));
+    newBoard->print();
+
 
 }

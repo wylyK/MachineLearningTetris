@@ -10,7 +10,10 @@ int main() {
     game.printBoard();
     std::cout << std::endl << (int)game.getFalling() << std::endl << std::endl;
     std::vector<std::tuple<int, int, int>> placements = game.getPlacements();
-    for (std::tuple<int, int, int> & placement : placements) {
-        std::cout << std::get<0>(placement) << ", " << std::get<1>(placement) << ", " << std::get<2>(placement) << std::endl;
-    }
+//    for (std::tuple<int, int, int> & placement : placements) {
+//        std::cout << std::get<0>(placement) << ", " << std::get<1>(placement) << ", " << std::get<2>(placement) << std::endl;
+//    }
+
+    std::game.previewMove(std::get<0>(placements[0]), std::get<1>(placements[0]),std::get<2>(placements[0]));
+
 }

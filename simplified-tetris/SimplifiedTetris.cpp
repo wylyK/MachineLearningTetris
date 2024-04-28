@@ -44,8 +44,8 @@ namespace SimplifiedTetris {
 
   void Game::printBoard() const {
       std::cout << "game state:" << std::endl;
-      for (int i = 0; i < 20; ++i) {
-          for (int j = 0; j < 10; ++j) {
+      for (int i = 0; i < Board::HEIGHT; ++i) {
+          for (int j = 0; j < Board::WIDTH; ++j) {
               std::cout << (int)board.board[i][j] << " ";
           }
           std::cout << std::endl;
@@ -55,8 +55,8 @@ namespace SimplifiedTetris {
   std::vector<std::tuple<int, int, int>> Game::getPlacements() {
       std::vector<std::tuple<int, int, int>> validPlacements;
       for (int f = 0; f < 4; ++f) {
-          for (int pieceX = -2; pieceX <= 8; ++pieceX) {
-              for (int pieceY = 21; pieceY > 0; --pieceY) {
+          for (int pieceX = -2; pieceX <= Board::WIDTH - 2; ++pieceX) {
+              for (int pieceY = Board::HEIGHT + 1; pieceY > 0; --pieceY) {
                   bool locationValid = true;
                   bool onFloor = false;
                   for (int subX = 0; subX < PIECE_SIZE[fallingPiece]; ++subX) {
@@ -93,5 +93,18 @@ namespace SimplifiedTetris {
       }
       return validPlacements;
   }
+  Game::Board* Game::previewMove(int rotation, int x, int y){
+      auto* boardCopy = new Board(board);
+      Tetromino piece = getFalling();
+      int size = PIECE_SIZE[piece];
 
+      for (int i = 0; i < size; i++){
+          for(int j = 0; j < size; j++){
+              if (FACINGS[piece][rotation][i][j] == Tetromino::null)
+                  continue;
+              boardCopy->board[y-i][x+j] = piece;
+          }
+      }
+      return boardCopy;
+  }
 }

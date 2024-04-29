@@ -18,6 +18,16 @@ namespace feats {
     }
     return heights;
   }
-
+ int rowsCleared(SimplifiedTetris::Game::Board b){
+  int cleared = 0;
+  for (auto & j : b.board){
+      bool isCleared = true;
+      for (int i = 0; i < SimplifiedTetris::Game::Board::WIDTH; i++){
+          isCleared  = isCleared && j[i];
+      }
+      cleared += isCleared;
+  }
+  return cleared;
+  }
 
 }

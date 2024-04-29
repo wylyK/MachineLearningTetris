@@ -3,10 +3,10 @@
 int main() {
     std::cout << "Hello" << std::endl;
 
-//    SimplifiedTetris::Game game(5);
-////    for (int i = 0; i < 50; ++i) {
-////        std::cout << (int)game.getNext() << std::endl;
-////    }
+    SimplifiedTetris::Game game(5);
+    for (int i = 0; i < 50; ++i) {
+        std::cout << (int)game.getNext() << std::endl;
+    }
 //    std::cout << (int)game.getFalling() << std::endl;
 //    game.printBoard();
 //    std::cout << std::endl << (int)game.getFalling() << std::endl << std::endl;

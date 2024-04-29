@@ -5,8 +5,8 @@
 namespace feats{
   using std::vector;
   vector<int> columnHeights(Game::board b);
-  int max(vector<int> heights);
-
+  int rowsCleared(Game::board b);
+  int holeDepth(Game)
 
 
 }

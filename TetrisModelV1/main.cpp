@@ -10,8 +10,8 @@ int main() {
         auto const newBoard = game.previewMove(std::get<0>(placement), std::get<1>(placement),std::get<2>(placement));
         std::cout << std::endl;
         newBoard->print();
-        std::cout << std::endl << "holes:" << getNumHoles(game.getBoard()) << std::endl;
-        std::cout << std::endl << "wells:" << getNumWells(game.getBoard()) << std::endl << std::endl;
+        std::cout << "holes:" << getNumHoles(game.getBoard()) << std::endl;
+        std::cout << "wells:" << getNumWells(game.getBoard()) << std::endl << std::endl;
     }
 
     std::cout << "Hello" << std::endl;

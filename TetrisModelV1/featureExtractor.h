@@ -5,6 +5,7 @@
 
 namespace feats{
   using std::vector;
+
   vector<int> columnHeights(SimplifiedTetris::Game::Board b);
   int max(vector<int> heights);
 

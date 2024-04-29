@@ -42,7 +42,7 @@ namespace SimplifiedTetris {
       return nextTetromino;
   }
 
-  void Game::Board::print() const {
+  void Board::print() const {
       for (int i = Board::HEIGHT - 1; i >= 0; --i) {
           for (int j = 0; j < Board::WIDTH; ++j) {
               std::cout << (int)board[i][j] << " ";
@@ -97,7 +97,7 @@ namespace SimplifiedTetris {
       }
       return validPlacements;
   }
-  Game::Board* Game::previewMove(int rotation, int x, int y){
+  Board* Game::previewMove(int rotation, int x, int y){
       auto* boardCopy = new Board(board);
       Tetromino piece = getFalling();
       int size = PIECE_SIZE[piece];

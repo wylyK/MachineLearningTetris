@@ -187,16 +187,15 @@ namespace SimplifiedTetris {
       Tetromino getNext();
   };
 
-  class Game {
+  class Board {
     public:
-      class Board {
-        public:
-          static const int WIDTH = 10;
-          static const int HEIGHT = 20;
-          Tetromino board[HEIGHT][WIDTH] = {};
-          void print() const;
-      };
+      static const int WIDTH = 10;
+      static const int HEIGHT = 20;
+      Tetromino board[HEIGHT][WIDTH] = {};
+      void print() const;
+  };
 
+  class Game {
     private:
       Board board;
       Tetromino fallingPiece;

@@ -97,16 +97,17 @@ namespace SimplifiedTetris {
       }
       return validPlacements;
   }
-  Board* Game::previewMove(int rotation, int x, int y){
-      auto* boardCopy = new Board(board);
-      Tetromino piece = getFalling();
-      int size = PIECE_SIZE[piece];
 
-      for (int i = 0; i < size; i++){
-          for(int j = 0; j < size; j++){
+  Board * Game::previewMove(int const rotation, int const x, int const y) {
+      auto * const boardCopy = new Board(board);
+      Tetromino const piece = getFalling();
+      int const size = PIECE_SIZE[piece];
+
+      for (int i = 0; i < size; i++) {
+          for (int j = 0; j < size; j++) {
               if (FACINGS[piece][rotation][i][j] == Tetromino::null)
                   continue;
-              boardCopy->board[y-i][x+j] = piece;
+              boardCopy->board[y - i][x + j] = piece;
           }
       }
       return boardCopy;

@@ -29,7 +29,7 @@ int main() {
 //            torch::data::transforms::Stack<>()),
 //        /*batch_size=*/64);
 
-    torch::Tensor inputData = torch::zeros(19);
+    torch::Tensor inputData = torch::zeros({1, 19});
 
     torch::Tensor prediction = net->forward(inputData);
 

@@ -7,7 +7,7 @@ TetrisModelV1::TetrisModelV1() {
 }
 
 torch::Tensor TetrisModelV1::forward(torch::Tensor x) {
-    x = torch::relu(fc1->forward(x.reshape({x.size(0), 784})));
+    x = torch::relu(fc1->forward(x.reshape({x.size(0), 19})));
     x = torch::relu(fc2->forward(x));
     x = torch::relu(fc3->forward(x));
     return x;

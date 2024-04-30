@@ -3,14 +3,16 @@
 namespace feats {
 
   vector<int> columnHeights(SimplifiedTetris::Board const & b) {
-      vector<int> heights(SimplifiedTetris::Board::WIDTH);
+      vector<int> heights(10);
+
       for (int i = 0; i < SimplifiedTetris::Board::WIDTH; i++) {
-          for (int j = SimplifiedTetris::Board::HEIGHT; j > -1; j++) {
+          heights[i] = 0;
+          for (int j = SimplifiedTetris::Board::HEIGHT - 1; j > -1; j--) {
               if (b.board[j][i] != SimplifiedTetris::null) {
-                  heights[i] = j + 1;
+                  heights[i]  = j + 1;
                   break;
               }
-              heights[i] = -1;
+
           }
       }
       return heights;
@@ -53,31 +55,4 @@ namespace feats {
       return wells;
   }
 
-  int getNumUnused(SimplifiedTetris::Board const & board) {
-      int numUnused = 0;
-      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
-          for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
-              if (board.board[row][col] == SimplifiedTetris::Tetromino::null) {
-                  numUnused++;
-              }
-          }
-      }
-      return numUnused;
-  }
-  
-  int getNumOverHoles(SimplifiedTetris::Board const & board) {
-      int numOverHoles = 0;
-      for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
-          bool reachedHole = false;
-          for (int row = 0; row < SimplifiedTetris::Board::HEIGHT; ++row) {
-              if(board.board[row][col] == SimplifiedTetris::Tetromino::null) {
-                  reachedHole = true;
-              }
-              if(board.board[row][col] != SimplifiedTetris::Tetromino::null && reachedHole) {
-                  numOverHoles++;
-              }
-          }
-      }
-      return numOverHoles;
-  }
 }

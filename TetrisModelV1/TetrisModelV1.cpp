@@ -17,9 +17,10 @@ void TetrisModelV1::setParams(int const param) {
     int i = 0;
     for (torch::Tensor & t : net.parameters()) {
         std::cout << "params " << i << ": " << t << std::endl;
+        ++i;
     }
 }
 
-torch::Tensor TetrisModelV1::evaluate(torch::Tensor features) {
+torch::Tensor TetrisModelV1::evaluate(torch::Tensor const & features) {
     return net.forward(features);
 }

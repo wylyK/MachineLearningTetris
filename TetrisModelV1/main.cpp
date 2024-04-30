@@ -26,8 +26,10 @@ int main() {
 
     torch::Tensor inputData = torch::zeros({1, 19});
 
+    model.setParams(5);
+
 //    torch::Tensor prediction = net->forward(inputData);
-    torch::Tensor prediction = modelg.evaluate(inputData);
+    torch::Tensor prediction = model.evaluate(inputData);
 
     std::cout << "prediction: " << prediction << std::endl;
     std::cout << "prediction: " << prediction.index({0, 0}) << std::endl;

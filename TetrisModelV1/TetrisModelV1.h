@@ -12,6 +12,6 @@ class TetrisModelV1 {
   private:
     Net net;
   public:
-    torch::Tensor evaluate(torch::Tensor);
+    torch::Tensor evaluate(torch::Tensor const &);
     void setParams(int);
 };

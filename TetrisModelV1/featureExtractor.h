@@ -6,7 +6,7 @@
 namespace feats {
   using std::vector;
 
-  vector<int> columnHeights(SimplifiedTetris::Board b);
+  vector<int> columnHeights(SimplifiedTetris::Board const & b);
   int max(vector<int> heights);
 
   int getNumHoles(SimplifiedTetris::Board const &);

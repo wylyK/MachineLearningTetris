@@ -3,7 +3,7 @@
 namespace feats {
 
   vector<int> columnHeights(SimplifiedTetris::Board const & b) {
-      vector<int> heights;
+      vector<int> heights(SimplifiedTetris::Board::WIDTH);
       for (int i = 0; i < SimplifiedTetris::Board::WIDTH; i++) {
           for (int j = SimplifiedTetris::Board::HEIGHT; j > -1; j++) {
               if (b.board[j][i] != SimplifiedTetris::null) {

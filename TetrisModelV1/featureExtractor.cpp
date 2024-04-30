@@ -65,8 +65,8 @@ namespace feats {
       return numUnused;
   }
 
-  int getNumOverHole(SimplifiedTetris::Board const & board) {
-      int numOverHole = 0;
+  int getNumOverHoles(SimplifiedTetris::Board const & board) {
+      int numOverHoles = 0;
       for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
           bool reachedHole = false;
           for (int row = 0; row < SimplifiedTetris::Board::HEIGHT; ++row) {
@@ -74,11 +74,11 @@ namespace feats {
                   reachedHole = true;
               }
               if(board.board[row][col] != SimplifiedTetris::Tetromino::null && reachedHole) {
-                  numOverHole++;
+                  numOverHoles++;
               }
           }
       }
-      return numOverHole;
+      return numOverHoles;
   }
 
 }

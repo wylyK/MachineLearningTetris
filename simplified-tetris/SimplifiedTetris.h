@@ -206,7 +206,7 @@ namespace SimplifiedTetris {
       typedef Bag::seed_type seed_type;
       explicit Game(seed_type);
       Tetromino getFalling() const { return fallingPiece; };
-      Board getBoard() const { return board; };
+      Board const & getBoard() const { return board; };
       void printBoard() const;
       Tetromino getNext();
       std::vector<std::tuple<int, int, int>> getPlacements();

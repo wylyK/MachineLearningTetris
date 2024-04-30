@@ -55,16 +55,30 @@ namespace feats {
 
   int getNumUnused(SimplifiedTetris::Board const & board) {
       int numUnused = 0;
-    for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
+      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
         for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
             if (board.board[row][col] == SimplifiedTetris::Tetromino::null) {
                 numUnused++;
             }
         }
-    }
-    return numUnused;
+      }
+      return numUnused;
   }
 
-
+  int getNumOverHole(SimplifiedTetris::Board const & board) {
+      int numOverHole = 0;
+      for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
+          bool reachedHole = false;
+          for (int row = 0; row < SimplifiedTetris::Board::HEIGHT; ++row) {
+              if(board.board[row][col] == SimplifiedTetris::Tetromino::null) {
+                  reachedHole = true;
+              }
+              if(board.board[row][col] != SimplifiedTetris::Tetromino::null && reachedHole) {
+                  numOverHole++;
+              }
+          }
+      }
+      return numOverHole;
+  }
 
 }

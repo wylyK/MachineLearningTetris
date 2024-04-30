@@ -53,4 +53,18 @@ namespace feats {
       return wells;
   }
 
+  int getNumUnused(SimplifiedTetris::Board const & board) {
+      int numUnused = 0;
+    for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
+        for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
+            if (board.board[row][col] == SimplifiedTetris::Tetromino::null) {
+                numUnused++;
+            }
+        }
+    }
+    return numUnused;
+  }
+
+
+
 }

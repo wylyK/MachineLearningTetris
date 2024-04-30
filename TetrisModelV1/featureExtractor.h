@@ -12,6 +12,9 @@ namespace feats {
   int getNumHoles(SimplifiedTetris::Board const &);
 
   int getNumWells(SimplifiedTetris::Board const &);
+
+  int getNumUnused(SimplifiedTetris::Board const &);
 }
+
 
 #endif //SIMPLIFIED_TETRIS_FEATUREEXTRACTOR_H

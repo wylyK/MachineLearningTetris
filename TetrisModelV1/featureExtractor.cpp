@@ -3,13 +3,13 @@
 namespace feats {
 
   vector<int> columnHeights(SimplifiedTetris::Board const & b) {
-      vector<int> heights(10);
+      vector<int> heights(SimplifiedTetris::Board::WIDTH);
 
       for (int i = 0; i < SimplifiedTetris::Board::WIDTH; i++) {
           heights[i] = 0;
           for (int j = SimplifiedTetris::Board::HEIGHT - 1; j > -1; j--) {
               if (b.board[j][i] != SimplifiedTetris::null) {
-                  heights[i]  = j + 1;
+                  heights[i] = j + 1;
                   break;
               }
 

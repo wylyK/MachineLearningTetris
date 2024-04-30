@@ -64,5 +64,20 @@ namespace feats {
       }
       return numUnused;
   }
-
+  
+  int getNumOverHoles(SimplifiedTetris::Board const & board) {
+      int numOverHoles = 0;
+      for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
+          bool reachedHole = false;
+          for (int row = 0; row < SimplifiedTetris::Board::HEIGHT; ++row) {
+              if(board.board[row][col] == SimplifiedTetris::Tetromino::null) {
+                  reachedHole = true;
+              }
+              if(board.board[row][col] != SimplifiedTetris::Tetromino::null && reachedHole) {
+                  numOverHoles++;
+              }
+          }
+      }
+      return numOverHoles;
+  }
 }

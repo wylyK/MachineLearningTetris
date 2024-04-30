@@ -20,10 +20,11 @@ namespace feats {
 
  int rowsCleared(SimplifiedTetris::Board const & b) {
      int cleared = 0;
-     for (auto &j: b.board) {
+     for (int j = 0; j < SimplifiedTetris::Board::HEIGHT;j++) {
+
          bool isCleared = true;
-         for (auto i : j) {
-             isCleared = isCleared && i;
+         for (int i = 0; i < SimplifiedTetris::Board::WIDTH; i++) {
+             isCleared = isCleared && b.board[j][i];
          }
          cleared += isCleared ? 1 : 0;
      }

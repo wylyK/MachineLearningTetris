@@ -1,5 +1,4 @@
 #include <iostream>
-//#inclide <memory>
 
 #include <torch/torch.h>
 
@@ -8,7 +7,6 @@
 using namespace torch::indexing;
 
 int main() {
-    std::cout << "Hello" << std::endl;
 
 //    SimplifiedTetris::Game game(5);
 ////    for (int i = 0; i < 50; ++i) {
@@ -23,11 +21,13 @@ int main() {
 //    }
 
     // Create a new Net.
-    auto net = std::make_shared<TetrisModelV1>();
+//    auto net = std::make_shared<TetrisModelV1::Net>();
+    TetrisModelV1 model{};
 
     torch::Tensor inputData = torch::zeros({1, 19});
 
-    torch::Tensor prediction = net->forward(inputData);
+//    torch::Tensor prediction = net->forward(inputData);
+    torch::Tensor prediction = modelg.evaluate(inputData);
 
     std::cout << "prediction: " << prediction << std::endl;
     std::cout << "prediction: " << prediction.index({0, 0}) << std::endl;

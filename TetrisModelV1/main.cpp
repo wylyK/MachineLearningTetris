@@ -14,8 +14,8 @@ int main() {
         vector<int> const colHeights = feats::columnHeights(*newBoard);
         std::cout << "unused:" << feats::getNumUnused(*newBoard) << std::endl;
         std::cout << "holes:" << feats::getNumHoles(*newBoard) << std::endl;
-        std::cout << "wells:" << feats::getNumWells(*newBoard) << std::endl << std::endl;
-        std::cout << "col heights:";
+        std::cout << "wells:" << feats::getNumWells(*newBoard) << std::endl;
+        std::cout << "col heights: ";
         for (int const colHeight : colHeights) {
             std::cout << colHeight << ", ";
         }

@@ -29,8 +29,14 @@ int main() {
 //            torch::data::transforms::Stack<>()),
 //        /*batch_size=*/64);
 
+    torch::Tensor inputData = torch::zeros(19);
+
+    torch::Tensor prediction = net->forward(inputData);
+
+    std::cout << prediction << std::endl;
+
     // Instantiate an SGD optimization algorithm to update our Net's parameters.
-    torch::optim::SGD optimizer(net->parameters(), /*lr=*/0.01);
+    // torch::optim::SGD optimizer(net->parameters(), /*lr=*/0.01);
 
 //    for (size_t epoch = 1; epoch <= 10; ++epoch) {
 //        size_t batch_index = 0;

@@ -26,7 +26,7 @@ int main() {
 
     torch::Tensor inputData = torch::zeros({1, 19});
 
-    model.setParams(5);
+    model.setParams(torch::zeros(TetrisModelV1::NUM_PARAMETERS));
 
 //    torch::Tensor prediction = net->forward(inputData);
     torch::Tensor prediction = model.evaluate(inputData);

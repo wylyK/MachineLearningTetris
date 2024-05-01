@@ -21,19 +21,16 @@ torch::Tensor TetrisModelV1::Net::forward(torch::Tensor x) {
     return x;
 }
 
-//void TetrisModelV1::setParams(torch::Tensor const & params) {
-void TetrisModelV1::setParams(int) {
+void TetrisModelV1::setParams(torch::Tensor const & params) {
+    torch::NoGradGuard no_grad;
     size_t paramsIdx = 0;
     for (torch::Tensor & t : net.parameters()) {
-        for (int i = 0; i < t.numel(); ++i) {
-
-            ;
-        }
-//        std::cout << "params " << i << ": " << t << std::endl;
-//        totalParams += t.numel();
-//        ++i;
+        int64_t const tParams = t.numel();
+        t.index_put_({torch::indexing::None},
+                     params.index({torch::indexing::Slice(paramsIdx, paramsIdx + tParams)}).reshape_as(t));
+        paramsIdx += tParams;
     }
-//    std::cout << totalParams << " total parameters counted" << std::endl;
+    std::cout << "final paramsIdx: " << paramsIdx << std::endl;
     std::cout << NUM_PARAMETERS << " total parameters calculated" << std::endl;
 }
 

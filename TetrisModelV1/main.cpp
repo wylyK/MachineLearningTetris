@@ -20,21 +20,10 @@ int main() {
 //        std::cout << std::get<0>(placement) << ", " << std::get<1>(placement) << ", " << std::get<2>(placement) << std::endl;
 //    }
 
-    // Create a new Net.
-//    auto net = std::make_shared<TetrisModelV1::Net>();
     TetrisModelV1 model{};
-
     torch::Tensor inputData = torch::zeros({1, 19});
-
-    model.setParams(torch::zeros(TetrisModelV1::NUM_PARAMETERS));
-
-//    torch::Tensor prediction = net->forward(inputData);
+    model.setParams(torch::full(TetrisModelV1::NUM_PARAMETERS, .1));
     torch::Tensor prediction = model.evaluate(inputData);
-
-    std::cout << "prediction: " << prediction << std::endl;
-    std::cout << "prediction: " << prediction.index({0, 0}) << std::endl;
-    std::cout << "prediction: " << prediction[0][0] << std::endl;
-    std::cout << "prediction<float>: " << prediction[0][0].item<float>() << std::endl;
-    std::cout << "prediction<double>: " << prediction[0][0].item<double>() << std::endl;
+    std::cout << "prediction: " << prediction.item<double>() << std::endl;
 
 }

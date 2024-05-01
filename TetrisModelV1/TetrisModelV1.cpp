@@ -30,8 +30,6 @@ void TetrisModelV1::setParams(torch::Tensor const & params) {
                      params.index({torch::indexing::Slice(paramsIdx, paramsIdx + tParams)}).reshape_as(t));
         paramsIdx += tParams;
     }
-    std::cout << "final paramsIdx: " << paramsIdx << std::endl;
-    std::cout << NUM_PARAMETERS << " total parameters calculated" << std::endl;
 }
 
 torch::Tensor TetrisModelV1::evaluate(torch::Tensor const & features) {

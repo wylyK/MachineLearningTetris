@@ -33,5 +33,8 @@ int main() {
 
     std::cout << "prediction: " << prediction << std::endl;
     std::cout << "prediction: " << prediction.index({0, 0}) << std::endl;
+    std::cout << "prediction: " << prediction[0][0] << std::endl;
+    std::cout << "prediction<float>: " << prediction[0][0].item<float>() << std::endl;
+    std::cout << "prediction<double>: " << prediction[0][0].item<double>() << std::endl;
 
 }

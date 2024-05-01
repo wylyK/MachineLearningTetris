@@ -14,6 +14,12 @@ namespace feats {
   int getNumWells(SimplifiedTetris::Board const &);
 
   int getNumUnused(SimplifiedTetris::Board const &);
+
+  int getNumOverHoles(SimplifiedTetris::Board const &);
+
+  int getNumRowTrans(SimplifiedTetris::Board const &);
+
+  int getNumColTrans(SimplifiedTetris::Board const &);
 }
 
 #endif //SIMPLIFIED_TETRIS_FEATUREEXTRACTOR_H

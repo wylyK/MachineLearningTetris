@@ -7,7 +7,7 @@ int main() {
     std::cout << std::endl;
     while (true) {
         auto placements = game.getPlacements();
-        if (placements.size() == 0) {
+        if (placements.empty()) {
             std::cout << "out of moves" << std::endl;
             break;
         }

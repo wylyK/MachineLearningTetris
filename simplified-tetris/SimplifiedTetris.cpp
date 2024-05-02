@@ -164,4 +164,9 @@ namespace SimplifiedTetris {
       return boardCopy;
   }
 
+  void Game::doMove(int const rotation, int const x, int const y) {
+      placePieceOnBoard(board, getFalling(), rotation, x, y);
+      fallingPiece = getNext();
+  }
+
 }

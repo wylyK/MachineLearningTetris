@@ -204,6 +204,7 @@ namespace SimplifiedTetris {
       Bag bag;
 
       void initializeNextQueue();
+      Tetromino getNext();
       static void placePieceOnBoard(Board &, Tetromino, int, int, int);  // (rot, x, y)
     public:
       typedef Bag::seed_type seed_type;
@@ -212,11 +213,11 @@ namespace SimplifiedTetris {
       Tetromino getFalling() const { return fallingPiece; };
       Board const & getBoard() const { return board; };
       void printBoard() const;
-      Tetromino getNext();
       std::vector<std::tuple<int, int, int>> getPlacements();  // (rot, x, y)
       std::vector<int> clearedRows();
       void clearFull();
       Board * previewMove(int rot, int x, int y);  // (rot, x, y)
+      void doMove(int rot, int x, int y);  // (rot, x, y)
   };
 }
 

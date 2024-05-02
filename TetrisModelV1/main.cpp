@@ -1,7 +1,11 @@
 #include <iostream>
 
+#include <torch/torch.h>
+
 #include "featureExtractor.h"
 #include "TetrisModelV1.h"
+
+using namespace torch::indexing;
 
 int main() {
     SimplifiedTetris::Game game(4);
@@ -37,4 +41,11 @@ int main() {
 //    for (std::tuple<int, int, int> & placement : placements) {
 //        std::cout << std::get<0>(placement) << ", " << std::get<1>(placement) << ", " << std::get<2>(placement) << std::endl;
 //    }
+
+    TetrisModelV1 model{};
+    torch::Tensor inputData = torch::zeros({1, 19});
+    model.setParams(torch::full(TetrisModelV1::NUM_PARAMETERS, .1));
+    torch::Tensor prediction = model.evaluate(inputData);
+    std::cout << "prediction: " << prediction.item<double>() << std::endl;
+
 }

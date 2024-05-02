@@ -20,6 +20,7 @@ namespace SimplifiedTetris {
       Z = 7
   };
   static constexpr int PIECE_SIZE[] = {
+      0, // empty
       3, // O
       4, // I
       3, // T
@@ -28,7 +29,8 @@ namespace SimplifiedTetris {
       3, // S
       3 // Z
   };
-  static constexpr Tetromino FACINGS[7][4][4][4] = {
+  static constexpr Tetromino FACINGS[8][4][4][4] = {
+      {}, //empty
       // O
       { // O
           // N
@@ -160,7 +162,7 @@ namespace SimplifiedTetris {
           {{Tetromino::null, Tetromino::Z,    Tetromino::null},
            {Tetromino::Z,    Tetromino::Z,    Tetromino::null},
            {Tetromino::Z,    Tetromino::null, Tetromino::null}},
-      },
+      }
   };
 
   class Bag {
@@ -185,12 +187,15 @@ namespace SimplifiedTetris {
       Tetromino getNext();
   };
 
-  class Game {
+  class Board {
     public:
-      class Board {
-        public:
-          Tetromino board[20][10] = {};
-      };
+      static const int WIDTH = 10;
+      static const int HEIGHT = 20;
+      Tetromino board[HEIGHT][WIDTH] = {};
+      void print() const;
+  };
+
+  class Game {
     private:
       Board board;
       Tetromino fallingPiece;
@@ -200,11 +205,15 @@ namespace SimplifiedTetris {
     public:
       typedef Bag::seed_type seed_type;
       explicit Game(seed_type);
+      explicit Game(seed_type, SimplifiedTetris::Board);
       Tetromino getFalling() const { return fallingPiece; };
-      Board getBoard() const { return board; };
+      Board const & getBoard() const { return board; };
       void printBoard() const;
       Tetromino getNext();
       std::vector<std::tuple<int, int, int>> getPlacements();
+      std::vector<int> clearedRows();
+      void clearFull();
+      Board* previewMove(int, int, int);
   };
 }
 

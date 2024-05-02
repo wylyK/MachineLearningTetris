@@ -44,6 +44,17 @@ namespace SimplifiedTetris {
       }
   }
 
+  void Game::placePieceOnBoard(Board & board, Tetromino const piece, int const rotation, int const x, int const y) {
+      int const size = PIECE_SIZE[piece];
+      for (int i = 0; i < size; i++) {
+          for (int j = 0; j < size; j++) {
+              if (FACINGS[piece][rotation][i][j] == Tetromino::null)
+                  continue;
+              board.board[y - i][x + j] = piece;
+          }
+      }
+  }
+
   Tetromino Game::getNext() {
       Tetromino const nextTetromino = nextQueue[0];
       for (size_t i = 0; i < 5; ++i) {
@@ -108,20 +119,22 @@ namespace SimplifiedTetris {
       }
       return validPlacements;
   }
-  std::vector<int> Game::clearedRows(){
+
+  std::vector<int> Game::clearedRows() {
       std::vector<int> rows;
-      for (int j = 0; j < Board::HEIGHT; j++){
+      for (int j = 0; j < Board::HEIGHT; j++) {
           bool cleared = true;
-          for (int i = 0; i < Board::WIDTH; i++){
+          for (int i = 0; i < Board::WIDTH; i++) {
               cleared = cleared && board.board[j][i];
           }
-          if (cleared){
+          if (cleared) {
               rows.push_back(j);
           }
       }
       return rows;
   }
-  void Game::clearFull(){
+
+  void Game::clearFull() {
       std::vector<int> full = clearedRows();
       auto const * boardCopy = new Board(board);
       int falls = 0;
@@ -144,18 +157,11 @@ namespace SimplifiedTetris {
           }
       }
   }
+
   Board * Game::previewMove(int const rotation, int const x, int const y) {
       auto * const boardCopy = new Board(board);
-      Tetromino const piece = getFalling();
-      int const size = PIECE_SIZE[piece];
-
-      for (int i = 0; i < size; i++) {
-          for (int j = 0; j < size; j++) {
-              if (FACINGS[piece][rotation][i][j] == Tetromino::null)
-                  continue;
-              boardCopy->board[y - i][x + j] = piece;
-          }
-      }
+      placePieceOnBoard(*boardCopy, getFalling(), rotation, x, y);
       return boardCopy;
   }
+
 }

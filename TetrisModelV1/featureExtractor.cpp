@@ -18,6 +18,19 @@ namespace feats {
       return heights;
   }
 
+ int rowsCleared(SimplifiedTetris::Board const & b) {
+     int cleared = 0;
+     for (int j = 0; j < SimplifiedTetris::Board::HEIGHT;j++) {
+
+         bool isCleared = true;
+         for (int i = 0; i < SimplifiedTetris::Board::WIDTH; i++) {
+             isCleared = isCleared && b.board[j][i];
+         }
+         cleared += isCleared ? 1 : 0;
+     }
+     return cleared;
+ }
+
   int getNumHoles(SimplifiedTetris::Board const & board) {
       bool filled[SimplifiedTetris::Board::WIDTH] = {};
       int holes = 0;

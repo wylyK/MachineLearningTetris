@@ -31,6 +31,16 @@ namespace SimplifiedTetris {
       for (Tetromino & t : nextQueue) {
           t = bag.getNext();
       }
+
+  }
+  Game::Game(Game::seed_type seed, SimplifiedTetris::Board b) :
+      bag(seed)
+  {
+      fallingPiece = bag.getNext();
+      for (Tetromino & t : nextQueue) {
+          t = bag.getNext();
+      }
+      board = b;
   }
 
   Tetromino Game::getNext() {
@@ -97,7 +107,42 @@ namespace SimplifiedTetris {
       }
       return validPlacements;
   }
-
+  std::vector<int> Game::clearedRows(){
+      std::vector<int> rows;
+      for (int j = 0; j < Board::HEIGHT; j++){
+          bool cleared = true;
+          for (int i = 0; i < Board::WIDTH; i++){
+              cleared = cleared && board.board[j][i];
+          }
+          if (cleared){
+              rows.push_back(j);
+          }
+      }
+      return rows;
+  }
+  void Game::clearFull(){
+      std::vector<int> full = clearedRows();
+      auto const * boardCopy = new Board(board);
+      int falls = 0;
+      int nextCleared = 0;
+      for (int j = 0; j < Board::HEIGHT; j++){
+          if (j == full[nextCleared]) {
+              for (int i = 0; i < Board::WIDTH; i++){
+                  board.board[j][i] = null;
+              }
+              falls++;
+              nextCleared < full.size() - 1 ? nextCleared++: 0;
+          }
+          else {
+              for (int i = 0; i < Board::WIDTH; i++) {
+                  if (falls > 0) {
+                      board.board[j - falls][i] = board.board[j][i];
+                      board.board[j][i] = null;
+                  }
+              }
+          }
+      }
+  }
   Board * Game::previewMove(int const rotation, int const x, int const y) {
       auto * const boardCopy = new Board(board);
       Tetromino const piece = getFalling();

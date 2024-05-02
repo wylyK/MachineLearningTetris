@@ -86,6 +86,15 @@ namespace SimplifiedTetris {
               for (int pieceY = Board::HEIGHT + 1; pieceY > 0; --pieceY) {
                   bool locationValid = true;
                   bool onFloor = false;
+                  bool overlaps = false;
+                  overlaps = pieceY - PIECE_SIZE[fallingPiece] > -1;
+                  for(int col = 0; !overlaps && col < PIECE_SIZE[fallingPiece]; col++){
+                      overlaps = overlaps ||
+                          (FACINGS[fallingPiece][f][PIECE_SIZE - 1][col]!= null && board.board[pieceY - PIECE_SIZE[fallingPiece]]);
+                  }
+                  if (overlaps){
+                      break;
+                  }
                   for (int subX = 0; subX < PIECE_SIZE[fallingPiece]; ++subX) {
                       for (int subY = 0; subY < PIECE_SIZE[fallingPiece]; ++subY) {
                           if (FACINGS[fallingPiece][f][subY][subX] == Tetromino::null) {

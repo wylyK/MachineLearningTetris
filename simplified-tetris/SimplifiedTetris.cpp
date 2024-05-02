@@ -27,20 +27,21 @@ namespace SimplifiedTetris {
   Game::Game(Game::seed_type seed) :
     bag(seed)
   {
-      fallingPiece = bag.getNext();
-      for (Tetromino & t : nextQueue) {
-          t = bag.getNext();
-      }
-
+      initializeNextQueue();
   }
+
   Game::Game(Game::seed_type seed, SimplifiedTetris::Board b) :
-      bag(seed)
+      bag(seed),
+      board(b)
   {
+      initializeNextQueue();
+  }
+
+  void Game::initializeNextQueue() {
       fallingPiece = bag.getNext();
       for (Tetromino & t : nextQueue) {
           t = bag.getNext();
       }
-      board = b;
   }
 
   Tetromino Game::getNext() {

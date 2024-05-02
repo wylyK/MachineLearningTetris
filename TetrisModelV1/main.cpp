@@ -3,8 +3,6 @@
 #include "featureExtractor.h"
 #include "TetrisModelV1.h"
 
-using std::vector;
-
 int main() {
     SimplifiedTetris::Game game(4);
     std::vector<std::tuple<int, int, int>> placements = game.getPlacements();

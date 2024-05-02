@@ -44,13 +44,13 @@ namespace SimplifiedTetris {
       }
   }
 
-  void Game::placePieceOnBoard(Board & board, Tetromino const piece, int const rotation, int const x, int const y) {
-      int const size = PIECE_SIZE[piece];
+  void Game::placePieceOnBoard(Board & board, Move const & move) {
+      int const size = PIECE_SIZE[move.piece];
       for (int i = 0; i < size; i++) {
           for (int j = 0; j < size; j++) {
-              if (FACINGS[piece][rotation][i][j] == Tetromino::null)
+              if (FACINGS[move.piece][move.rotation][i][j] == Tetromino::null)
                   continue;
-              board.board[y - i][x + j] = piece;
+              board.board[move.y - i][move.x + j] = move.piece;
           }
       }
   }
@@ -78,8 +78,8 @@ namespace SimplifiedTetris {
       board.print();
   }
 
-  std::vector<std::tuple<int, int, int>> Game::getPlacements() {
-      std::vector<std::tuple<int, int, int>> validPlacements;
+  std::vector<Move> Game::getPlacements() {
+      std::vector<Move> validPlacements;
       for (int f = 0; f < 4; ++f) {
           for (int pieceX = -2; pieceX <= Board::WIDTH - 2; ++pieceX) {
               for (int pieceY = Board::HEIGHT + 1; pieceY > 0; --pieceY) {
@@ -112,7 +112,7 @@ namespace SimplifiedTetris {
                       }
                   }
                   if (locationValid && onFloor) {
-                      validPlacements.emplace_back(f, pieceX, pieceY);
+                      validPlacements.push_back({fallingPiece, f, pieceX, pieceY});
                   }
               }
           }
@@ -158,14 +158,14 @@ namespace SimplifiedTetris {
       }
   }
 
-  Board * Game::previewMove(int const rotation, int const x, int const y) {
+  Board * Game::previewMove(Move const & move) {
       auto * const boardCopy = new Board(board);
-      placePieceOnBoard(*boardCopy, getFalling(), rotation, x, y);
+      placePieceOnBoard(*boardCopy, move);
       return boardCopy;
   }
 
-  void Game::doMove(int const rotation, int const x, int const y) {
-      placePieceOnBoard(board, getFalling(), rotation, x, y);
+  void Game::doMove(Move const & move) {
+      placePieceOnBoard(board, move);
       fallingPiece = getNext();
   }
 

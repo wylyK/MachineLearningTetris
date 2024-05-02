@@ -187,6 +187,13 @@ namespace SimplifiedTetris {
       Tetromino getNext();
   };
 
+  struct Move {
+      Tetromino piece;
+      int rotation;
+      int x;
+      int y;
+  };
+
   class Board {
     public:
       static const int WIDTH = 10;
@@ -205,7 +212,7 @@ namespace SimplifiedTetris {
 
       void initializeNextQueue();
       Tetromino getNext();
-      static void placePieceOnBoard(Board &, Tetromino, int, int, int);  // (rot, x, y)
+      static void placePieceOnBoard(Board &, Move const &);
     public:
       typedef Bag::seed_type seed_type;
       explicit Game(seed_type);
@@ -213,11 +220,11 @@ namespace SimplifiedTetris {
       Tetromino getFalling() const { return fallingPiece; };
       Board const & getBoard() const { return board; };
       void printBoard() const;
-      std::vector<std::tuple<int, int, int>> getPlacements();  // (rot, x, y)
+      std::vector<Move> getPlacements();
       std::vector<int> clearedRows();
       void clearFull();
-      Board * previewMove(int rot, int x, int y);  // (rot, x, y)
-      void doMove(int rot, int x, int y);  // (rot, x, y)
+      Board * previewMove(Move const &);
+      void doMove(Move const &);
   };
 }
 

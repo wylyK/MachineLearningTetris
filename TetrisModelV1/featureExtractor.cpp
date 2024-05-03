@@ -130,8 +130,8 @@ namespace feats {
   }
   int maxHeight(const vector<int>& heights){
       int max = 0;
-      for (int i = 0; i < heights.size(); i++){
-          max = std::max(max, vector[i]);
+      for (int height : heights){
+          max = std::max(max, height);
       }
       return max;
   }

@@ -32,15 +32,17 @@ void TetrisModelV1Trainer::trainRound() {
     int idxs[population];
     std::iota(&idxs[0], &idxs[population], 0);
 
+    static int const k = 20;
+
     // sort largest to smallest
-    std::sort(&idxs[0], &idxs[population], [&results](int const & i, int const & j) {
+    std::partial_sort(&idxs[0], &idxs[k], &idxs[population], [&results](int const & i, int const & j) {
         return results[i] > results[j];
     });
 
     std::cout << "Results: " << results << std::endl;
 
-    std::cout << "Top 20 results: ";
-    for (int i = 0; i < 20; ++i) {
+    std::cout << "Top " << k << " results: ";
+    for (int i = 0; i < k; ++i) {
         std::cout << results[idxs[i]] << ", ";
     }
     std::cout << std::endl;

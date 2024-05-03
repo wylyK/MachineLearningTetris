@@ -30,7 +30,7 @@ namespace SimplifiedTetris {
       initializeNextQueue();
   }
 
-  Game::Game(Game::seed_type seed, SimplifiedTetris::Board b) :
+  Game::Game(Game::seed_type const seed, SimplifiedTetris::Board b) :
       bag(seed),
       board(b)
   {

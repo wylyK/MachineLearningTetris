@@ -2,7 +2,9 @@
 
 class TetrisModelV1 {
   public:
-    static size_t constexpr INPUT_FEATURES = 19;
+    // TODO: change this back to 19 once the last 3 features are added
+    // static size_t constexpr INPUT_FEATURES = 19;
+    static size_t constexpr INPUT_FEATURES = 16;
     static size_t constexpr MIDDLE_LAYER_1_SIZE = 10;
     static size_t constexpr MIDDLE_LAYER_2_SIZE = 10;
 

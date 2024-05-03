@@ -125,4 +125,23 @@ namespace feats {
       }
       return numRowTrans;
   }
+
+  std::pair<int, int> getNumTrans(SimplifiedTetris::Board const & board) {
+      std::pair<int, int> numRowCol;
+      numRowCol.first  = 0;
+      numRowCol.second = 0;
+      int const HEIGHT = SimplifiedTetris::Board::HEIGHT;
+      int const WIDTH  = SimplifiedTetris::Board::WIDTH;
+      bool
+      for (int row = HEIGHT - 1; row >= 0; --row) {
+          for (int col = 0; col < WIDTH; ++col) {
+              // if (row, col) is the topmost and leftmost index of the grid, then continue
+              if (row == HEIGHT - 1 && col == 0) {
+                  continue;
+              }
+
+          }
+      }
+      return numRowCol;
+  }
 }

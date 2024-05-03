@@ -79,7 +79,6 @@ namespace SimplifiedTetris {
   }
 
   std::vector<Move> Game::getPlacements() {
-      // TODO: break the loop when iterating down the y when hitting a block, so it isnt teleporting
       std::vector<Move> validPlacements;
       for (int f = 0; f < 4; ++f) {
           for (int pieceX = -2; pieceX <= Board::WIDTH - 2; ++pieceX) {

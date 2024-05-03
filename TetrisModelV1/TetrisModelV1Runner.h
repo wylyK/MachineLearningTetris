@@ -17,4 +17,6 @@ class TetrisModelV1Runner {
     void reset(seed_type);
 };
 
+int playGame(TetrisModelV1 &, SimplifiedTetris::Game &);
+
 #endif //SIMPLIFIED_TETRIS_TETRISMODELV1RUNNER_H

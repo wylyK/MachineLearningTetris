@@ -12,6 +12,10 @@ TetrisModelV1Runner::TetrisModelV1Runner(TetrisModelV1Runner::seed_type const se
 }
 
 int TetrisModelV1Runner::play() {
+    return playGame(model, game);
+}
+
+int playGame(TetrisModelV1 & model, SimplifiedTetris::Game & game) {
     int numMoves = 0;
     while (true) {
         auto const placements = game.getPlacements();

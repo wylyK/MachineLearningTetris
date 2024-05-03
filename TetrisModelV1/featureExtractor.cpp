@@ -1,10 +1,9 @@
 #include "featureExtractor.h"
 
 namespace feats {
-
+//iterate over columns: columnHeights, numHoles, row transitions
   vector<int> columnHeights(SimplifiedTetris::Board const & b) {
       vector<int> heights(SimplifiedTetris::Board::WIDTH);
-
       for (int i = 0; i < SimplifiedTetris::Board::WIDTH; i++) {
           heights[i] = 0;
           for (int j = SimplifiedTetris::Board::HEIGHT - 1; j > -1; j--) {

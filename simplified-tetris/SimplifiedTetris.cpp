@@ -98,7 +98,7 @@ namespace SimplifiedTetris {
                           // x axis for piece: left=0
                           int const x = pieceX + subX;
                           // y axis for board: bottom=0
-                          // x axis for piece: top=0
+                          // y axis for piece: top=0
                           int const y = pieceY - subY;
 
                           if (x < 0 || x >= 10 || y < 0 || y >= Board::HEIGHT) {

@@ -11,11 +11,16 @@ TetrisModelV1::Net::Net() {
 }
 
 torch::Tensor TetrisModelV1::Net::forward(torch::Tensor x) {
+    if (!(x.ndimension() == 2 && x.size(1) == INPUT_FEATURES)) {
+        std::cerr << "input to TetrisModelV1 must be of shape [n, " << INPUT_FEATURES << "], not " << x.sizes()
+                  << std::endl;
+        abort();
+    }
     if (x.dtype() != torch::kFloat64) {
         x = x.to(torch::kFloat64);
     }
     std::cout << "x = " << x << std::endl;
-    x = torch::relu(fc1->forward(x.reshape({x.size(0), 19})));
+    x = torch::relu(fc1->forward(x));
     x = torch::relu(fc2->forward(x));
     x = torch::sigmoid(fc3->forward(x));
     return x;

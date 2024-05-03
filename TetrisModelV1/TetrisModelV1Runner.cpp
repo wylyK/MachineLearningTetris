@@ -20,43 +20,42 @@ void TetrisModelV1Runner::play() {
             break;
         }
 
-        vector<double> scores;
-        for (SimplifiedTetris::Move & placement : placements) {
-            torch::Tensor modelInput = torch::empty(TetrisModelV1::NUM_PARAMETERS);
-            auto const newBoard = game.previewMove(placement);
+        torch::Tensor modelInput = torch::empty({static_cast<int64_t>(placements.size()),
+                                                 TetrisModelV1::INPUT_FEATURES});
+        for (int n = 0; n < placements.size(); ++n) {
+            auto const newBoard = game.previewMove(placements[n]);
             int64_t modelInputIdx = 0;
 
             vector<int> const colHeights = feats::columnHeights(*newBoard);
             for (int const & colHeight : colHeights) {
-                modelInput[modelInputIdx] = colHeight;
+                modelInput[n][modelInputIdx] = colHeight;
                 ++modelInputIdx;
             }
 
-            modelInput[modelInputIdx] = feats::getNumUnused(*newBoard);
+            modelInput[n][modelInputIdx] = feats::getNumUnused(*newBoard);
             ++modelInputIdx;
 
-            modelInput[modelInputIdx] = feats::getNumHoles(*newBoard);
+            modelInput[n][modelInputIdx] = feats::getNumHoles(*newBoard);
             ++modelInputIdx;
 
-            modelInput[modelInputIdx] = feats::getNumWells(*newBoard);
+            modelInput[n][modelInputIdx] = feats::getNumWells(*newBoard);
             ++modelInputIdx;
 
-            modelInput[modelInputIdx] = feats::getNumOverHoles(*newBoard);
+            modelInput[n][modelInputIdx] = feats::getNumOverHoles(*newBoard);
             ++modelInputIdx;
 
-            modelInput[modelInputIdx] = feats::getNumRowTrans(*newBoard);
+            modelInput[n][modelInputIdx] = feats::getNumRowTrans(*newBoard);
             ++modelInputIdx;
 
-            modelInput[modelInputIdx] = feats::getNumColTrans(*newBoard);
+            modelInput[n][modelInputIdx] = feats::getNumColTrans(*newBoard);
             ++modelInputIdx;
 
             if (modelInputIdx != TetrisModelV1::INPUT_FEATURES) {
                 std::cerr << "defined number of inputs to TetrisModelV1 does not match amount passed in TetrisModelV1Runner" << std::endl;
                 abort();
             }
-
-            scores.push_back(model.evaluate(modelInput).item<double>());
         }
+        auto const scores = model.evaluate(modelInput);
         std::cout << "scores = " << scores << std::endl;
         break;
 

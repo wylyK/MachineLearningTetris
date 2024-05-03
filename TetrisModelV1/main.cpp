@@ -33,7 +33,7 @@ int main() {
 //    }
 
 //    TetrisModelV1 model{};
-//    torch::Tensor inputData = torch::zeros({1, 19});
+//    torch::Tensor inputData = torch::zeros({1, TetrisModelV1::INPUT_FEATURES});
 //    model.setParams(torch::full(TetrisModelV1::NUM_PARAMETERS, .1));
 //    torch::Tensor prediction = model.evaluate(inputData);
 //    std::cout << "prediction: " << prediction.item<double>() << std::endl;

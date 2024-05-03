@@ -1,6 +1,7 @@
 #include "TetrisModelV1Trainer.h"
 #include <algorithm>
 #include <array>
+#include <torch/torch.h>
 #include "TetrisModelV1Runner.h"
 
 TetrisModelV1Trainer::TetrisModelV1Trainer(size_t population, seed_type seed) :
@@ -9,7 +10,7 @@ TetrisModelV1Trainer::TetrisModelV1Trainer(size_t population, seed_type seed) :
     game(random())
 {
     for (size_t i = 0; i < population; ++i) {
-        models.emplace_back();
+        models.push_back(new TetrisModelV1());
     }
 }
 
@@ -20,13 +21,14 @@ vector<int> TetrisModelV1Trainer::runPopulation() {
         // TODO: make this more efficient
         game = SimplifiedTetris::Game(random());
 
-        results.push_back(playGame(models[i], game));
+        results.push_back(playGame(*models[i], game));
     }
     return results;
 }
 
 void TetrisModelV1Trainer::trainRound() {
     auto results = runPopulation();
+    std::cout << "Results: " << results << std::endl;
 
     // create array if indexes 0..population
     int idxs[population];
@@ -39,11 +41,21 @@ void TetrisModelV1Trainer::trainRound() {
         return results[i] > results[j];
     });
 
-    std::cout << "Results: " << results << std::endl;
+    for (int i = 0; i < k; ++i) {
+        models[i] = models[idxs[i]];
+    }
 
     std::cout << "Top " << k << " results: ";
     for (int i = 0; i < k; ++i) {
         std::cout << results[idxs[i]] << ", ";
     }
     std::cout << std::endl;
+
+    std::uniform_int_distribution<size_t> randomSampler(0, k);
+    for (int i = k; i < population; ++i) {
+        torch::Tensor const & sourceParams = models[randomSampler(random)]->params;
+        // models[i]->setParams(torch::normal(sourceParams, torch::full(TetrisModelV1::NUM_PARAMETERS, GENETIC_STDDEV),
+        //                                    TetrisModelV1::NUM_PARAMETERS));
+        models[i]->setParams(at::normal(sourceParams, TetrisModelV1::NUM_PARAMETERS));
+    }
 }

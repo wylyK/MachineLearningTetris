@@ -196,8 +196,9 @@ namespace SimplifiedTetris {
 
   class Board {
     public:
-      static const int WIDTH = 10;
-      static const int HEIGHT = 20;
+      static constexpr int WIDTH = 10;
+      static constexpr int HEIGHT = 20;
+      static constexpr int NUM_CELLS = HEIGHT * WIDTH;
       Tetromino board[HEIGHT][WIDTH] = {};
       void print() const;
   };

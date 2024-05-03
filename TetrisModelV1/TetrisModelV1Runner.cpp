@@ -32,7 +32,8 @@ void TetrisModelV1Runner::play() {
                 ++modelInputIdx;
             }
 
-            modelInput[n][modelInputIdx] = feats::getNumUnused(*newBoard);
+            // divide by board size to normalize between 0 and 1
+            modelInput[n][modelInputIdx] = static_cast<double>(feats::getNumUnused(*newBoard)) / SimplifiedTetris::Board::NUM_CELLS;
             ++modelInputIdx;
 
             modelInput[n][modelInputIdx] = feats::getNumHoles(*newBoard);

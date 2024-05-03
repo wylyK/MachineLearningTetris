@@ -16,6 +16,7 @@ class TetrisModelV1Trainer {
   public:
     typedef std::mt19937_64::result_type seed_type;
     explicit TetrisModelV1Trainer(size_t population, seed_type seed);
+    vector<int> runPopulation();
     void trainRound();
 };
 

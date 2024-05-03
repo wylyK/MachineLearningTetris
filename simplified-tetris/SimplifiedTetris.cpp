@@ -86,15 +86,7 @@ namespace SimplifiedTetris {
               for (int pieceY = Board::HEIGHT + 1; pieceY > 0; --pieceY) {
                   bool locationValid = true;
                   bool onFloor = false;
-                  bool overlaps = false;
-                  overlaps = pieceY - PIECE_SIZE[fallingPiece] > -1;
-                  for(int col = 0; !overlaps && col < PIECE_SIZE[fallingPiece]; col++){
-                      overlaps = overlaps ||
-                          (FACINGS[fallingPiece][f][PIECE_SIZE - 1][col]!= null && board.board[pieceY - PIECE_SIZE[fallingPiece]]);
-                  }
-                  if (overlaps){
-                      break;
-                  }
+                  bool overlap = false;
                   for (int subX = 0; subX < PIECE_SIZE[fallingPiece]; ++subX) {
                       for (int subY = 0; subY < PIECE_SIZE[fallingPiece]; ++subY) {
                           if (FACINGS[fallingPiece][f][subY][subX] == Tetromino::null) {
@@ -109,7 +101,14 @@ namespace SimplifiedTetris {
                           // x axis for piece: top=0
                           int const y = pieceY - subY;
 
-                          if (x < 0 || x >= 10 || y < 0 || board.board[y][x] != Tetromino::null) {
+                          if (x < 0 || x >= 10 || y < 0 || y >= Board::HEIGHT) {
+                              // piece is out of bounds
+                              locationValid = false;
+                              break;
+                          }
+                          if (board.board[y][x] != Tetromino::null) {
+                              // piece overlaps with a piece already on the board
+                              overlap = true;
                               locationValid = false;
                               break;
                           }
@@ -119,14 +118,24 @@ namespace SimplifiedTetris {
                       }
                       if (!locationValid) {
                           break;
+                      } // end for subY
+                  } // end for subX
+                  if (onFloor) {
+                      if (locationValid) {
+                          validPlacements.push_back({fallingPiece, f, pieceX, pieceY});
                       }
+
+                      // we have been moving the tetromino down a column and it has hit the floor,
+                      // so
+                      break;
+                  } else if (overlap) {
+                      // most cases the onFloor check above should handle this, but if even the top of the column is
+                      // obstructed, then we don't want to waste time checking the entire column.
+                      break;
                   }
-                  if (locationValid && onFloor) {
-                      validPlacements.push_back({fallingPiece, f, pieceX, pieceY});
-                  }
-              }
-          }
-      }
+              } // end for pieceY
+          } // end for pieceX
+      } // end for f
       return validPlacements;
   }
 

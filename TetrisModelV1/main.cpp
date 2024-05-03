@@ -9,9 +9,9 @@ using namespace torch::indexing;
 
 int main() {
     SimplifiedTetris::Game game(4);
-    std::vector<std::tuple<int, int, int>> placements = game.getPlacements();
-    for (std::tuple<int, int, int> & placement : placements) {
-        auto const newBoard = game.previewMove(std::get<0>(placement), std::get<1>(placement), std::get<2>(placement));
+    std::vector<SimplifiedTetris::Move> placements = game.getPlacements();
+    for (SimplifiedTetris::Move & placement : placements) {
+        auto const newBoard = game.previewMove(placement);
         newBoard->print();
         std::cout << std::endl;
         vector<int> const colHeights = feats::columnHeights(*newBoard);

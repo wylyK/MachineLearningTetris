@@ -57,11 +57,11 @@ void TetrisModelV1Runner::play() {
             }
         }
         auto const scores = model.evaluate(modelInput);
-        std::cout << "scores = " << scores << std::endl;
-        break;
-
-        game.doMove(placements[0]);
+        // std::cout << "scores = " << scores << std::endl;
+        int const bestPlacement = torch::argmax(scores).item<int>();
+        game.doMove(placements[bestPlacement]);
         game.getBoard().print();
+        ++numMoves;
         std::cout << std::endl;
     }
 }

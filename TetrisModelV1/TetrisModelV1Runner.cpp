@@ -65,3 +65,8 @@ int TetrisModelV1Runner::play() {
         // std::cout << std::endl;
     }
 }
+
+void TetrisModelV1Runner::reset() {
+    // TODO: seed this with a random number
+    game = SimplifiedTetris::Game(8);
+}

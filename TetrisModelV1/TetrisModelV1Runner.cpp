@@ -22,33 +22,35 @@ int TetrisModelV1Runner::play() {
 
         torch::Tensor modelInput = torch::empty({static_cast<int64_t>(placements.size()),
                                                  TetrisModelV1::INPUT_FEATURES});
+        auto modelInputAccessor = modelInput.accessor<float, 2>();
         for (int n = 0; n < placements.size(); ++n) {
             auto const newBoard = game.previewMove(placements[n]);
             int64_t modelInputIdx = 0;
 
             vector<int> const colHeights = feats::columnHeights(*newBoard);
             for (int const & colHeight : colHeights) {
-                modelInput[n][modelInputIdx] = colHeight;
+                modelInputAccessor[n][modelInputIdx] = static_cast<float>(colHeight);
+
                 ++modelInputIdx;
             }
 
             // divide by board size to normalize between 0 and 1
-            modelInput[n][modelInputIdx] = static_cast<double>(feats::getNumUnused(*newBoard)) / SimplifiedTetris::Board::NUM_CELLS;
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumUnused(*newBoard)) / SimplifiedTetris::Board::NUM_CELLS;
             ++modelInputIdx;
 
-            modelInput[n][modelInputIdx] = feats::getNumHoles(*newBoard);
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumHoles(*newBoard));
             ++modelInputIdx;
 
-            modelInput[n][modelInputIdx] = feats::getNumWells(*newBoard);
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumWells(*newBoard));
             ++modelInputIdx;
 
-            modelInput[n][modelInputIdx] = feats::getNumOverHoles(*newBoard);
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumOverHoles(*newBoard));
             ++modelInputIdx;
 
-            modelInput[n][modelInputIdx] = feats::getNumRowTrans(*newBoard);
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumRowTrans(*newBoard));
             ++modelInputIdx;
 
-            modelInput[n][modelInputIdx] = feats::getNumColTrans(*newBoard);
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumColTrans(*newBoard));
             ++modelInputIdx;
 
             if (modelInputIdx != TetrisModelV1::INPUT_FEATURES) {

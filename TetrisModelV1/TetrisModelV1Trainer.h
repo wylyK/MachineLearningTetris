@@ -8,9 +8,8 @@ using std::vector;
 class TetrisModelV1Trainer {
   private:
     vector<TetrisModelV1> models;
-    vector<torch::Tensor> weights;
   public:
-    TetrisModelV1Trainer();
+    explicit TetrisModelV1Trainer(size_t population);
 };
 
 #endif //SIMPLIFIED_TETRIS_TETRISMODELV1TRAINER_H

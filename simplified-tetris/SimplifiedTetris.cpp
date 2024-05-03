@@ -27,20 +27,32 @@ namespace SimplifiedTetris {
   Game::Game(Game::seed_type seed) :
     bag(seed)
   {
-      fallingPiece = bag.getNext();
-      for (Tetromino & t : nextQueue) {
-          t = bag.getNext();
-      }
-
+      initializeNextQueue();
   }
+
   Game::Game(Game::seed_type seed, SimplifiedTetris::Board b) :
-      bag(seed)
+      bag(seed),
+      board(b)
   {
+      initializeNextQueue();
+  }
+
+  void Game::initializeNextQueue() {
       fallingPiece = bag.getNext();
       for (Tetromino & t : nextQueue) {
           t = bag.getNext();
       }
-      board = b;
+  }
+
+  void Game::placePieceOnBoard(Board & board, Move const & move) {
+      int const size = PIECE_SIZE[move.piece];
+      for (int i = 0; i < size; i++) {
+          for (int j = 0; j < size; j++) {
+              if (FACINGS[move.piece][move.rotation][i][j] == Tetromino::null)
+                  continue;
+              board.board[move.y - i][move.x + j] = move.piece;
+          }
+      }
   }
 
   Tetromino Game::getNext() {
@@ -66,13 +78,15 @@ namespace SimplifiedTetris {
       board.print();
   }
 
-  std::vector<std::tuple<int, int, int>> Game::getPlacements() {
-      std::vector<std::tuple<int, int, int>> validPlacements;
+  std::vector<Move> Game::getPlacements() {
+      // TODO: break the loop when iterating down the y when hitting a block, so it isnt teleporting
+      std::vector<Move> validPlacements;
       for (int f = 0; f < 4; ++f) {
           for (int pieceX = -2; pieceX <= Board::WIDTH - 2; ++pieceX) {
               for (int pieceY = Board::HEIGHT + 1; pieceY > 0; --pieceY) {
                   bool locationValid = true;
                   bool onFloor = false;
+                  bool overlap = false;
                   for (int subX = 0; subX < PIECE_SIZE[fallingPiece]; ++subX) {
                       for (int subY = 0; subY < PIECE_SIZE[fallingPiece]; ++subY) {
                           if (FACINGS[fallingPiece][f][subY][subX] == Tetromino::null) {
@@ -84,10 +98,17 @@ namespace SimplifiedTetris {
                           // x axis for piece: left=0
                           int const x = pieceX + subX;
                           // y axis for board: bottom=0
-                          // x axis for piece: top=0
+                          // y axis for piece: top=0
                           int const y = pieceY - subY;
 
-                          if (x < 0 || x >= 10 || y < 0 || board.board[y][x] != Tetromino::null) {
+                          if (x < 0 || x >= 10 || y < 0 || y >= Board::HEIGHT) {
+                              // piece is out of bounds
+                              locationValid = false;
+                              break;
+                          }
+                          if (board.board[y][x] != Tetromino::null) {
+                              // piece overlaps with a piece already on the board
+                              overlap = true;
                               locationValid = false;
                               break;
                           }
@@ -97,30 +118,42 @@ namespace SimplifiedTetris {
                       }
                       if (!locationValid) {
                           break;
+                      } // end for subY
+                  } // end for subX
+                  if (onFloor) {
+                      if (locationValid) {
+                          validPlacements.push_back({fallingPiece, f, pieceX, pieceY});
                       }
+
+                      // we have been moving the tetromino down a column and it has hit the floor,
+                      // so
+                      break;
+                  } else if (overlap) {
+                      // most cases the onFloor check above should handle this, but if even the top of the column is
+                      // obstructed, then we don't want to waste time checking the entire column.
+                      break;
                   }
-                  if (locationValid && onFloor) {
-                      validPlacements.emplace_back(f, pieceX, pieceY);
-                  }
-              }
-          }
-      }
+              } // end for pieceY
+          } // end for pieceX
+      } // end for f
       return validPlacements;
   }
-  std::vector<int> Game::clearedRows(){
+
+  std::vector<int> Game::clearedRows() {
       std::vector<int> rows;
-      for (int j = 0; j < Board::HEIGHT; j++){
+      for (int j = 0; j < Board::HEIGHT; j++) {
           bool cleared = true;
-          for (int i = 0; i < Board::WIDTH; i++){
+          for (int i = 0; i < Board::WIDTH; i++) {
               cleared = cleared && board.board[j][i];
           }
-          if (cleared){
+          if (cleared) {
               rows.push_back(j);
           }
       }
       return rows;
   }
-  void Game::clearFull(){
+
+  void Game::clearFull() {
       std::vector<int> full = clearedRows();
       auto const * boardCopy = new Board(board);
       int falls = 0;
@@ -143,18 +176,16 @@ namespace SimplifiedTetris {
           }
       }
   }
-  Board * Game::previewMove(int const rotation, int const x, int const y) {
-      auto * const boardCopy = new Board(board);
-      Tetromino const piece = getFalling();
-      int const size = PIECE_SIZE[piece];
 
-      for (int i = 0; i < size; i++) {
-          for (int j = 0; j < size; j++) {
-              if (FACINGS[piece][rotation][i][j] == Tetromino::null)
-                  continue;
-              boardCopy->board[y - i][x + j] = piece;
-          }
-      }
+  Board * Game::previewMove(Move const & move) {
+      auto * const boardCopy = new Board(board);
+      placePieceOnBoard(*boardCopy, move);
       return boardCopy;
   }
+
+  void Game::doMove(Move const & move) {
+      placePieceOnBoard(board, move);
+      fallingPiece = getNext();
+  }
+
 }

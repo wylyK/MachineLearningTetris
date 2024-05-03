@@ -125,4 +125,14 @@ namespace feats {
       }
       return numRowTrans;
   }
+  int rowsCleared(SimplifiedTetris::Game const & g){
+      return g.clearedRows().size();
+  }
+  int maxHeight(const vector<int>& heights){
+      int max = 0;
+      for (int i = 0; i < heights.size(); i++){
+          max = std::max(max, vector[i]);
+      }
+      return max;
+  }
 }

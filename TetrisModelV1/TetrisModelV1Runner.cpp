@@ -11,13 +11,13 @@ TetrisModelV1Runner::TetrisModelV1Runner(TetrisModelV1Runner::seed_type const se
     model.setParams(weights);
 }
 
-void TetrisModelV1Runner::play() {
+int TetrisModelV1Runner::play() {
     int numMoves = 0;
     while (true) {
-        auto placements = game.getPlacements();
+        auto const placements = game.getPlacements();
         if (placements.empty()) {
-            std::cout << "Out of moves. Lasted " << numMoves << " moves." << std::endl;
-            break;
+            // std::cout << "Out of moves. Lasted " << numMoves << " moves." << std::endl;
+            return numMoves;
         }
 
         torch::Tensor modelInput = torch::empty({static_cast<int64_t>(placements.size()),
@@ -60,8 +60,8 @@ void TetrisModelV1Runner::play() {
         // std::cout << "scores = " << scores << std::endl;
         int const bestPlacement = torch::argmax(scores).item<int>();
         game.doMove(placements[bestPlacement]);
-        game.getBoard().print();
+        // game.getBoard().print();
         ++numMoves;
-        std::cout << std::endl;
+        // std::cout << std::endl;
     }
 }

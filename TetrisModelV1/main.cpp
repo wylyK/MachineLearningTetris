@@ -1,16 +1,13 @@
 #include <iostream>
 
-#include <torch/torch.h>
-
-#include "featureExtractor.h"
 #include "TetrisModelV1Runner.h"
 
 using namespace torch::indexing;
 
 int main() {
     TetrisModelV1Runner runner(5);
-    runner.play();
-    return 0;
+    int const numMoves = runner.play();
+    std::cout << "lasted " << numMoves << " moves" << std::endl;
 
 //    SimplifiedTetris::Game game(4);
 //    std::vector<SimplifiedTetris::Move> placements = game.getPlacements();

@@ -13,7 +13,7 @@ class TetrisModelV1Runner {
   public:
     typedef SimplifiedTetris::Game::seed_type seed_type;
     explicit TetrisModelV1Runner(seed_type);
-    void play();
+    int play();
 };
 
 #endif //SIMPLIFIED_TETRIS_TETRISMODELV1RUNNER_H

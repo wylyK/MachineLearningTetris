@@ -8,14 +8,17 @@
 using std::vector;
 
 class TetrisModelV1Trainer {
+  public:
+    static constexpr float GENETIC_STDDEV = .1;
   private:
     std::mt19937_64 random;
-    vector<TetrisModelV1> models;
+    vector<TetrisModelV1 *> models;
     SimplifiedTetris::Game game;
     size_t population;
   public:
     typedef std::mt19937_64::result_type seed_type;
     explicit TetrisModelV1Trainer(size_t population, seed_type seed);
+    vector<int> runPopulation();
     void trainRound();
 };
 

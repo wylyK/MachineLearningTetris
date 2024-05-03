@@ -1,3 +1,5 @@
+#ifndef SIMPLIFIED_TETRIS_TETRISMODELV1_H
+#define SIMPLIFIED_TETRIS_TETRISMODELV1_H
 #include <torch/torch.h>
 
 class TetrisModelV1 {
@@ -39,3 +41,5 @@ class TetrisModelV1 {
     torch::Tensor evaluate(torch::Tensor const &);
     void setParams(torch::Tensor const & params);
 };
+
+#endif //SIMPLIFIED_TETRIS_TETRISMODELV1_H

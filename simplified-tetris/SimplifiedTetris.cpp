@@ -83,18 +83,12 @@ namespace SimplifiedTetris {
       std::vector<Move> validPlacements;
       for (int f = 0; f < 4; ++f) {
           for (int pieceX = -2; pieceX <= Board::WIDTH - 2; ++pieceX) {
+              bool columnValid = true;
               for (int pieceY = Board::HEIGHT + 1; pieceY > 0; --pieceY) {
+
                   bool locationValid = true;
                   bool onFloor = false;
-                  bool overlaps = false;
-                  overlaps = pieceY - PIECE_SIZE[fallingPiece] > -1;
-                  for(int col = 0; !overlaps && col < PIECE_SIZE[fallingPiece]; col++){
-                      overlaps = overlaps ||
-                          (FACINGS[fallingPiece][f][PIECE_SIZE - 1][col]!= null && board.board[pieceY - PIECE_SIZE[fallingPiece]]);
-                  }
-                  if (overlaps){
-                      break;
-                  }
+
                   for (int subX = 0; subX < PIECE_SIZE[fallingPiece]; ++subX) {
                       for (int subY = 0; subY < PIECE_SIZE[fallingPiece]; ++subY) {
                           if (FACINGS[fallingPiece][f][subY][subX] == Tetromino::null) {
@@ -106,12 +100,13 @@ namespace SimplifiedTetris {
                           // x axis for piece: left=0
                           int const x = pieceX + subX;
                           // y axis for board: bottom=0
-                          // x axis for piece: top=0
+                          // y axis for piece: top=0
                           int const y = pieceY - subY;
 
                           if (x < 0 || x >= 10 || y < 0 || board.board[y][x] != Tetromino::null) {
                               locationValid = false;
                               break;
+                              columnValid = false;
                           }
                           if (y == 0 || board.board[y - 1][x] != Tetromino::null) {
                               onFloor = true;
@@ -120,11 +115,20 @@ namespace SimplifiedTetris {
                       if (!locationValid) {
                           break;
                       }
+                      if (onFloor){
+                          columnValid = false;
+                      }
                   }
                   if (locationValid && onFloor) {
                       validPlacements.push_back({fallingPiece, f, pieceX, pieceY});
                   }
+               std::cout << columnValid;
+                  if (!columnValid){
+                      break;
+                  }
               }
+
+              std::cout<<std::endl;
           }
       }
       return validPlacements;

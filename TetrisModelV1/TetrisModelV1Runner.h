@@ -14,7 +14,7 @@ class TetrisModelV1Runner {
     typedef SimplifiedTetris::Game::seed_type seed_type;
     explicit TetrisModelV1Runner(seed_type);
     int play();
-    void reset();
+    void reset(seed_type);
 };
 
 #endif //SIMPLIFIED_TETRIS_TETRISMODELV1RUNNER_H

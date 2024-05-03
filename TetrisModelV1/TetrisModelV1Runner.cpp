@@ -68,7 +68,6 @@ int TetrisModelV1Runner::play() {
     }
 }
 
-void TetrisModelV1Runner::reset() {
-    // TODO: seed this with a random number
-    game = SimplifiedTetris::Game(8);
+void TetrisModelV1Runner::reset(seed_type seed) {
+    game = SimplifiedTetris::Game(seed);
 }

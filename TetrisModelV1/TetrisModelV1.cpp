@@ -28,7 +28,23 @@ torch::Tensor TetrisModelV1::Net::forward(torch::Tensor x) {
     return x;
 }
 
-void TetrisModelV1::setParams(torch::Tensor const & params) {
+TetrisModelV1::TetrisModelV1(torch::Dtype dtype) :
+    dtype(dtype),
+    net(dtype)
+{
+    // mean 0, stddev .5
+    setParams(torch::normal(0, .5, TetrisModelV1::NUM_PARAMETERS));
+}
+
+TetrisModelV1::TetrisModelV1(torch::Tensor const & params, torch::Dtype dtype) :
+    dtype(dtype),
+    net(dtype)
+{
+    setParams(params);
+}
+
+void TetrisModelV1::setParams(torch::Tensor const & newParams) {
+    params = newParams;
     torch::NoGradGuard no_grad;
     size_t paramsIdx = 0;
     for (torch::Tensor & t : net.parameters()) {

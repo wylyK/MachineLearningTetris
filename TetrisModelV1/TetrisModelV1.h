@@ -22,17 +22,20 @@ class TetrisModelV1 {
         torch::nn::Linear fc1{nullptr};
         torch::nn::Linear fc2{nullptr};
         torch::nn::Linear fc3{nullptr};
-        Net() : Net(torch::kFloat32) {}
         explicit Net(torch::Dtype);
         torch::Tensor forward(torch::Tensor);
     };
 
-    torch::Dtype const dtype = torch::kFloat32;
+    torch::Dtype const dtype;
+    torch::Tensor params;
   private:
     Net net;
   public:
-    TetrisModelV1() = default;
-    TetrisModelV1(torch::Dtype dtype) : dtype(dtype), net(dtype) {}
+    TetrisModelV1() : TetrisModelV1(torch::kFloat32) {}
+    explicit TetrisModelV1(torch::Tensor const & params) : TetrisModelV1(params, torch::kFloat32) {}
+    explicit TetrisModelV1(torch::Dtype);
+    explicit TetrisModelV1(torch::Tensor const &, torch::Dtype);
+
     torch::Tensor evaluate(torch::Tensor const &);
     void setParams(torch::Tensor const & params);
 };

@@ -18,15 +18,21 @@ class TetrisModelV1 {
     );
 
     struct Net : torch::nn::Module {
+        torch::Dtype const dtype;
         torch::nn::Linear fc1{nullptr};
         torch::nn::Linear fc2{nullptr};
         torch::nn::Linear fc3{nullptr};
-        Net();
+        Net() : Net(torch::kFloat32) {}
+        explicit Net(torch::Dtype);
         torch::Tensor forward(torch::Tensor);
     };
+
+    torch::Dtype const dtype = torch::kFloat32;
   private:
     Net net;
   public:
+    TetrisModelV1() = default;
+    TetrisModelV1(torch::Dtype dtype) : dtype(dtype), net(dtype) {}
     torch::Tensor evaluate(torch::Tensor const &);
     void setParams(torch::Tensor const & params);
 };

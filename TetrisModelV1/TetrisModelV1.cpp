@@ -1,13 +1,15 @@
 #include "TetrisModelV1.h"
 
-TetrisModelV1::Net::Net() {
+TetrisModelV1::Net::Net(torch::Dtype const dtype) :
+    dtype(dtype)
+{
     fc1 = register_module("fc1", torch::nn::Linear(INPUT_FEATURES, MIDDLE_LAYER_1_SIZE));
     fc2 = register_module("fc2", torch::nn::Linear(MIDDLE_LAYER_1_SIZE, MIDDLE_LAYER_2_SIZE));
     fc3 = register_module("fc3", torch::nn::Linear(MIDDLE_LAYER_2_SIZE, 1));
 
-    fc1->to(torch::kFloat64);
-    fc2->to(torch::kFloat64);
-    fc3->to(torch::kFloat64);
+    fc1->to(dtype);
+    fc2->to(dtype);
+    fc3->to(dtype);
 }
 
 torch::Tensor TetrisModelV1::Net::forward(torch::Tensor x) {
@@ -16,8 +18,8 @@ torch::Tensor TetrisModelV1::Net::forward(torch::Tensor x) {
                   << std::endl;
         abort();
     }
-    if (x.dtype() != torch::kFloat64) {
-        x = x.to(torch::kFloat64);
+    if (x.dtype() != dtype) {
+        x = x.to(dtype);
     }
     // std::cout << "x = " << x << std::endl;
     x = torch::relu(fc1->forward(x));

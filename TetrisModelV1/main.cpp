@@ -3,11 +3,13 @@
 #include <torch/torch.h>
 
 #include "featureExtractor.h"
-#include "TetrisModelV1.h"
+#include "TetrisModelV1Runner.h"
 
 using namespace torch::indexing;
 
 int main() {
+    TetrisModelV1Runner runner(5);
+
     SimplifiedTetris::Game game(4);
     std::vector<SimplifiedTetris::Move> placements = game.getPlacements();
     for (SimplifiedTetris::Move & placement : placements) {

@@ -127,21 +127,37 @@ namespace feats {
   }
 
   std::pair<int, int> getNumTrans(SimplifiedTetris::Board const & board) {
-      std::pair<int, int> numRowCol;
-      numRowCol.first  = 0;
-      numRowCol.second = 0;
+      std::pair<int, int> numTrans;
+
+      // row and col transitions respectively
+      numTrans.first  = 0;
+      numTrans.second = 0;
       int const HEIGHT = SimplifiedTetris::Board::HEIGHT;
       int const WIDTH  = SimplifiedTetris::Board::WIDTH;
-      bool
       for (int row = HEIGHT - 1; row >= 0; --row) {
           for (int col = 0; col < WIDTH; ++col) {
-              // if (row, col) is the topmost and leftmost index of the grid, then continue
-              if (row == HEIGHT - 1 && col == 0) {
-                  continue;
+
+              if (row != 0) {
+                  bool is_prev_row_filled = board.board[row - 1][col] != SimplifiedTetris::Tetromino::null;
+                  bool is_curr_row_filled = board.board[row][col]     != SimplifiedTetris::Tetromino::null;
+
+                  // check if row transition
+                  if (is_prev_row_filled != is_curr_row_filled) {
+                      numTrans.first++;
+                  }
               }
 
+              if (col != 0) {
+                  bool is_prev_col_filled = board.board[row][col - 1] != SimplifiedTetris::Tetromino::null;
+                  bool is_curr_col_filled = board.board[row][col]     != SimplifiedTetris::Tetromino::null;
+
+                  // check if col transition
+                  if (is_prev_col_filled != is_curr_col_filled) {
+                      numTrans.second++;
+                  }
+              }
           }
       }
-      return numRowCol;
+      return numTrans;
   }
 }

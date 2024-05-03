@@ -137,8 +137,8 @@ namespace feats {
       for (int row = HEIGHT - 1; row >= 0; --row) {
           for (int col = 0; col < WIDTH; ++col) {
 
-              if (row != HEIGHT - 1) {
-                  bool is_prev_row_filled = board.board[row - 1][col] != SimplifiedTetris::Tetromino::null;
+              if (row < HEIGHT - 1) {
+                  bool is_prev_row_filled = board.board[row + 1][col] != SimplifiedTetris::Tetromino::null;
                   bool is_curr_row_filled = board.board[row][col]     != SimplifiedTetris::Tetromino::null;
 
                   // check if row transition

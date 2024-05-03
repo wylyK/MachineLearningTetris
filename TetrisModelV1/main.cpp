@@ -9,8 +9,9 @@ int main() {
     TetrisModelV1Trainer trainer(100, 5);
 
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    trainer.trainRound();
-    trainer.trainRound();
+    for (int i = 0; i < 100; ++i) {
+        trainer.trainRound();
+    }
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     std::cout << "Time taken = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << std::endl;
 

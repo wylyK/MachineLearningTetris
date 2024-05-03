@@ -28,7 +28,7 @@ vector<int> TetrisModelV1Trainer::runPopulation() {
 
 void TetrisModelV1Trainer::trainRound() {
     auto results = runPopulation();
-    std::cout << "Results: " << results << std::endl;
+    // std::cout << "Results: " << results << std::endl;
 
     // create array if indexes 0..population
     int idxs[population];
@@ -45,11 +45,14 @@ void TetrisModelV1Trainer::trainRound() {
         models[i] = models[idxs[i]];
     }
 
-    std::cout << "Top " << k << " results: ";
+    int topKSum = 0;
+    // std::cout << "Top " << k << " results: ";
     for (int i = 0; i < k; ++i) {
-        std::cout << results[idxs[i]] << ", ";
+        // std::cout << results[idxs[i]] << ", ";
+        topKSum += results[idxs[i]];
     }
-    std::cout << std::endl;
+    // std::cout << std::endl;
+    std::cout << "Mean of top " << k << ": " << static_cast<float>(topKSum) / k;
 
     std::uniform_int_distribution<size_t> randomSampler(0, k);
     for (int i = k; i < population; ++i) {

@@ -61,6 +61,8 @@ int playGame(TetrisModelV1 & model, SimplifiedTetris::Game & game) {
                 std::cerr << "defined number of inputs to TetrisModelV1 does not match amount passed in TetrisModelV1Runner" << std::endl;
                 abort();
             }
+
+            delete newBoard;
         }
         auto const scores = model.evaluate(modelInput);
         // std::cout << "scores = " << scores << std::endl;

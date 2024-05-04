@@ -9,7 +9,7 @@ using std::vector;
 
 class TetrisModelV1Trainer {
   public:
-    static constexpr float GENETIC_STDDEV = .1;
+    static constexpr float GENETIC_STDDEV = .5;
   private:
     std::mt19937_64 random;
     vector<TetrisModelV1 *> models;

@@ -34,7 +34,7 @@ std::tuple<int, int> playGame(TetrisModelV1 & model, SimplifiedTetris::Game & ga
             modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numUnused) / SimplifiedTetris::Board::NUM_CELLS;
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumHoles(*newBoard));
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numHoles);
             ++modelInputIdx;
 
             modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumWells(*newBoard));

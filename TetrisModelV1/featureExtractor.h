@@ -29,9 +29,7 @@ namespace feats {
 
   // int rowsCleared(SimplifiedTetris::Board const &);
   // int holeDepth(SimplifiedTetris::Board const &);
-  int getNumHoles(SimplifiedTetris::Board const &);
   int getNumWells(SimplifiedTetris::Board const &);
-  int getNumUnused(SimplifiedTetris::Board const &);
   // std::pair<int, int>getNumTrans(SimplifiedTetris::Board const &);
   std::tuple<int, int> horizontalFeatures(SimplifiedTetris::Board const & board);
   std::tuple<vector<int>, int, int> verticalFeatures(SimplifiedTetris::Board const & board);

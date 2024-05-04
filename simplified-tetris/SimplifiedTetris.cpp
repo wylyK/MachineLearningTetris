@@ -165,7 +165,7 @@ namespace SimplifiedTetris {
       return rowsCleared;
   }
 
-  Board * Game::previewMove(Move const & move) {
+  Board * Game::previewMove(Move const & move) const {
       auto * const boardCopy = new Board(board);
       placePieceOnBoard(*boardCopy, move);
       clearRowsOnBoard(*boardCopy);

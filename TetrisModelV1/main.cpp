@@ -9,7 +9,7 @@ int main() {
     TetrisModelV1Trainer trainer(100, 5);
 
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    for (int generation = 0; generation < 3; ++generation) {
+    for (int generation = 0; generation < 100; ++generation) {
         std::cout << "Generation " << generation << std::endl;
         trainer.trainRound();
         std::cout << std::endl;

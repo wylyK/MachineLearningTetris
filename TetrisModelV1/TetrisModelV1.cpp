@@ -28,7 +28,7 @@ torch::Tensor TetrisModelV1::Net::forward(torch::Tensor x) {
     return x;
 }
 
-TetrisModelV1::TetrisModelV1(torch::Dtype dtype) :
+TetrisModelV1::TetrisModelV1(torch::Dtype const dtype) :
     dtype(dtype),
     net(dtype)
 {
@@ -36,7 +36,7 @@ TetrisModelV1::TetrisModelV1(torch::Dtype dtype) :
     setParams(torch::normal(0, .5, TetrisModelV1::NUM_PARAMETERS));
 }
 
-TetrisModelV1::TetrisModelV1(torch::Tensor const & params, torch::Dtype dtype) :
+TetrisModelV1::TetrisModelV1(torch::Tensor const & params, torch::Dtype const dtype) :
     dtype(dtype),
     net(dtype)
 {

@@ -3,18 +3,6 @@
 
 using std::vector;
 
-TetrisModelV1Runner::TetrisModelV1Runner(TetrisModelV1Runner::seed_type const seed) :
-    game(seed)
-{
-    // mean 0, stddev .5
-    weights = torch::normal(0, .5, TetrisModelV1::NUM_PARAMETERS);
-    model.setParams(weights);
-}
-
-int TetrisModelV1Runner::play() {
-    return playGame(model, game);
-}
-
 int playGame(TetrisModelV1 & model, SimplifiedTetris::Game & game) {
     int numMoves = 0;
     while (true) {
@@ -72,8 +60,4 @@ int playGame(TetrisModelV1 & model, SimplifiedTetris::Game & game) {
         ++numMoves;
         // std::cout << std::endl;
     }
-}
-
-void TetrisModelV1Runner::reset(seed_type seed) {
-    game = SimplifiedTetris::Game(seed);
 }

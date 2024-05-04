@@ -45,13 +45,8 @@ namespace SimplifiedTetris {
   }
 
   void Game::placePieceOnBoard(Board & board, Move const & move) {
-      int const size = PIECE_SIZE[move.piece];
-      for (int i = 0; i < size; i++) {
-          for (int j = 0; j < size; j++) {
-              if (FACINGS[move.piece][move.rotation][i][j] == Tetromino::null)
-                  continue;
-              board.board[move.y - i][move.x + j] = move.piece;
-          }
+      for (auto const & blockCoord : PIECE_IDXS[move.piece][move.rotation]) {
+          board.board[move.y - blockCoord[0]][move.x + blockCoord[1]] = move.piece;
       }
   }
 

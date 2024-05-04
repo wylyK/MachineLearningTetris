@@ -7,7 +7,8 @@
 TetrisModelV1Trainer::TetrisModelV1Trainer(size_t population, seed_type seed) :
     population(population),
     random(seed),
-    game(random())
+    game(random()),
+    torchGen(at::detail::createCPUGenerator(random()))  // TODO: use bracket initialization?
 {
     for (size_t i = 0; i < population; ++i) {
         // TODO: implement destructor

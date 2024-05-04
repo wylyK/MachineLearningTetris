@@ -52,7 +52,7 @@ void TetrisModelV1Trainer::trainRound() {
         topKSum += results[idxs[i]];
     }
     // std::cout << std::endl;
-    std::cout << "Mean of top " << k << ": " << static_cast<float>(topKSum) / k;
+    std::cout << "Mean of top " << k << ": " << static_cast<float>(topKSum) / k << std::endl;
 
     std::uniform_int_distribution<size_t> randomSampler(0, k);
     for (int i = k; i < population; ++i) {

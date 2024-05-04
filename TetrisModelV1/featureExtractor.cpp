@@ -126,9 +126,9 @@ namespace feats {
       return numRowTrans;
   }
 
-  int rowsCleared(SimplifiedTetris::Game const & g) {
-      return g.clearedRows().size();
-  }
+  // int rowsCleared(SimplifiedTetris::Game const & g) {
+  //     return g.clearedRows().size();
+  // }
 
   int maxHeight(vector<int> const & heights) {
       int max = 0;

@@ -9,10 +9,8 @@ namespace feats {
 
   // analysis is done per column
   struct VerticalFeatures {
-      // vector<int> colHeights;
       int numOverHoles;
       int numColTrans;
-      // int maxColHeight;
   };
 
   // analysis is done per row

@@ -45,13 +45,8 @@ namespace SimplifiedTetris {
   }
 
   void Game::placePieceOnBoard(Board & board, Move const & move) {
-      int const size = PIECE_SIZE[move.piece];
-      for (int i = 0; i < size; i++) {
-          for (int j = 0; j < size; j++) {
-              if (FACINGS[move.piece][move.rotation][i][j] == Tetromino::null)
-                  continue;
-              board.board[move.y - i][move.x + j] = move.piece;
-          }
+      for (auto const & blockCoord : PIECE_IDXS[move.piece][move.rotation]) {
+          board.board[move.y - blockCoord[0]][move.x + blockCoord[1]] = move.piece;
       }
   }
 
@@ -78,50 +73,39 @@ namespace SimplifiedTetris {
       board.print();
   }
 
-  std::vector<Move> Game::getPlacements() {
-      std::vector<Move> validPlacements;
+  void Game::getPlacements(std::vector<Move> & placementsList) {
       for (int f = 0; f < 4; ++f) {
           for (int pieceX = -2; pieceX <= Board::WIDTH - 2; ++pieceX) {
               for (int pieceY = Board::HEIGHT + 1; pieceY > 0; --pieceY) {
                   bool locationValid = true;
                   bool onFloor = false;
                   bool overlap = false;
-                  for (int subX = 0; subX < PIECE_SIZE[fallingPiece]; ++subX) {
-                      for (int subY = 0; subY < PIECE_SIZE[fallingPiece]; ++subY) {
-                          if (FACINGS[fallingPiece][f][subY][subX] == Tetromino::null) {
-                              // this block in the tetromino is empty, so we don't need to check it
-                              continue;
-                          }
+                  for (auto const & blockCoord : PIECE_IDXS[fallingPiece][f]) {
+                      // x axis for board: left=0
+                      // x axis for piece: left=0
+                      int const x = pieceX + blockCoord[1];
+                      // y axis for board: bottom=0
+                      // y axis for piece: top=0
+                      int const y = pieceY - blockCoord[0];
 
-                          // x axis for board: left=0
-                          // x axis for piece: left=0
-                          int const x = pieceX + subX;
-                          // y axis for board: bottom=0
-                          // y axis for piece: top=0
-                          int const y = pieceY - subY;
-
-                          if (x < 0 || x >= 10 || y < 0 || y >= Board::HEIGHT) {
-                              // piece is out of bounds
-                              locationValid = false;
-                              break;
-                          }
-                          if (board.board[y][x] != Tetromino::null) {
-                              // piece overlaps with a piece already on the board
-                              overlap = true;
-                              locationValid = false;
-                              break;
-                          }
-                          if (y == 0 || board.board[y - 1][x] != Tetromino::null) {
-                              onFloor = true;
-                          }
-                      }
-                      if (!locationValid) {
+                      if (x < 0 || x >= 10 || y < 0 || y >= Board::HEIGHT) {
+                          // piece is out of bounds
+                          locationValid = false;
                           break;
-                      } // end for subY
-                  } // end for subX
+                      }
+                      if (board.board[y][x] != Tetromino::null) {
+                          // piece overlaps with a piece already on the board
+                          overlap = true;
+                          locationValid = false;
+                          break;
+                      }
+                      if (y == 0 || board.board[y - 1][x] != Tetromino::null) {
+                          onFloor = true;
+                      }
+                  }
                   if (onFloor) {
                       if (locationValid) {
-                          validPlacements.push_back({fallingPiece, f, pieceX, pieceY});
+                          placementsList.push_back({fallingPiece, f, pieceX, pieceY});
                       }
 
                       // we have been moving the tetromino down a column and it has hit the floor,
@@ -135,41 +119,53 @@ namespace SimplifiedTetris {
               } // end for pieceY
           } // end for pieceX
       } // end for f
-      return validPlacements;
   }
 
   int Game::clearRowsOnBoard(SimplifiedTetris::Board & board) {
+      // std::cout << "before:" << std::endl;
+      // board.print();
+
       int rowsCleared = 0;
-      for (int j = 0; j < Board::HEIGHT; j++) {
+      for (int row = 0; row < Board::HEIGHT; ++row) {
 
           bool full = true;
-          for (int i = 0; i < Board::WIDTH; i++) {
-              if (board.board[j][i] == Tetromino::null) {
+          for (int x = 0; x < Board::WIDTH; ++x) {
+              if (board.board[row][x] == Tetromino::null) {
                   full = false;
+                  break;
               }
           }
 
           if (full) {
-              // null the row (required for edge case at the top of the board)
-              for (int i = 0; i < Board::WIDTH; i++) {
-                  board.board[j][i] = null;
-              }
               ++rowsCleared;
           } else if (rowsCleared > 0) {
-              for (int i = 0; i < Board::WIDTH; i++) {
-                  board.board[j - rowsCleared][i] = board.board[j][i];
-                  board.board[j][i] = null;
+              for (int x = 0; x < Board::WIDTH; ++x) {
+                  board.board[row - rowsCleared][x] = board.board[row][x];
               }
           }
       }
+
+      // make the new rows at the top empty
+      for (int row = Board::HEIGHT - rowsCleared; row < Board::HEIGHT; ++row) {
+          for (int x = 0; x < Board::WIDTH; ++x) {
+              board.board[row][x] = Tetromino::null;
+          }
+      }
+
+      // std::cout << "after:" << std::endl;
+      // board.print();
+      // if (rowsCleared) {
+      //     abort();
+      // }
+
       return rowsCleared;
   }
 
-  std::tuple<Board *, int> Game::previewMove(Move const & move) const {
-      auto * const boardCopy = new Board(board);
-      placePieceOnBoard(*boardCopy, move);
-      int rowsCleared = clearRowsOnBoard(*boardCopy);
-      return {boardCopy, rowsCleared};
+  int Game::previewMove(Move const & move, Board & boardOut) const {
+      boardOut = board;
+      placePieceOnBoard(boardOut, move);
+      int rowsCleared = clearRowsOnBoard(boardOut);
+      return rowsCleared;
   }
 
   int Game::doMove(Move const & move) {

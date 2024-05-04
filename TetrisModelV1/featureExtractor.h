@@ -6,20 +6,26 @@
 using std::vector;
 
 namespace feats {
-  struct verticalFeatures {
-      vector<int> heights;
-      int numOverHoles;
-      int numColTrans;
-      int maxHeight;
 
+  // analysis is done per column
+  struct VerticalFeatures {
+      // vector<int> heights;
+      // int numOverHoles;
+      // int numColTrans;
+      // int maxHeight;
   };
-  struct horizontalFeatures {
+
+  // analysis is done per row
+  struct HorizontalFeatures {
       int numRowTrans;
-      int numUnused;
-      int numWells;
-      int numHoles;
-      int rowsCleared;
+      // int numUnused;
+      // int numWells;
+      // int numHoles;
+      // int rowsCleared;
   };
+
+  HorizontalFeatures getHorizontalFeatures(SimplifiedTetris::Board const &);
+
   vector<int> columnHeights(SimplifiedTetris::Board const &);
   int maxHeight(vector<int> const & heights);
   int rowsCleared(SimplifiedTetris::Board const &);

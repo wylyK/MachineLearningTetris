@@ -128,11 +128,11 @@ namespace feats {
   VerticalFeatures getVerticalFeatures(SimplifiedTetris::Board const & board) {
       int numColTrans = 0;
       for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
-          bool is_prev_used = board.board[SimplifiedTetris::Board::WIDTH - 1][col] != SimplifiedTetris::Tetromino::null;
+          bool is_prev_used = board.board[SimplifiedTetris::Board::HEIGHT - 1][col] != SimplifiedTetris::Tetromino::null;
           for (int row = SimplifiedTetris::Board::HEIGHT - 2; row >= 0; --row) {
-              bool is_curr_used = board.board[row][col] != SimplifiedTetris::Tetromino::null;
+              bool const is_curr_used = board.board[row][col] != SimplifiedTetris::Tetromino::null;
               if (is_prev_used != is_curr_used) {
-                  numColTrans++;
+                  ++numColTrans;
               }
               is_prev_used = is_curr_used;
           }

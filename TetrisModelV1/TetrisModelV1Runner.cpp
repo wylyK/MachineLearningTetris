@@ -3,18 +3,6 @@
 
 using std::vector;
 
-TetrisModelV1Runner::TetrisModelV1Runner(TetrisModelV1Runner::seed_type const seed) :
-    game(seed)
-{
-    // mean 0, stddev .5
-    weights = torch::normal(0, .5, TetrisModelV1::NUM_PARAMETERS);
-    model.setParams(weights);
-}
-
-int TetrisModelV1Runner::play() {
-    return playGame(model, game);
-}
-
 int playGame(TetrisModelV1 & model, SimplifiedTetris::Game & game) {
     int numMoves = 0;
     while (true) {
@@ -28,9 +16,10 @@ int playGame(TetrisModelV1 & model, SimplifiedTetris::Game & game) {
                                                  TetrisModelV1::INPUT_FEATURES});
         auto modelInputAccessor = modelInput.accessor<float, 2>();
         for (int n = 0; n < placements.size(); ++n) {
-            auto const boardState = game.previewMove(placements[n]);
-            auto const newBoard = get<0>(boardState);
-            (boardState)int64_t modelInputIdx = 0;
+            auto const preview_result = game.previewMove(placements[n]);
+            auto const newBoard = std::get<0>(preview_result);
+            auto const rowsCleared = std::get<1>(preview_result);
+            int64_t modelInputIdx = 0;
 
             vector<int> const colHeights = feats::columnHeights(*newBoard);
             for (int const & colHeight : colHeights) {
@@ -58,6 +47,9 @@ int playGame(TetrisModelV1 & model, SimplifiedTetris::Game & game) {
             modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumColTrans(*newBoard));
             ++modelInputIdx;
 
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(rowsCleared);
+            ++modelInputIdx;
+
             if (modelInputIdx != TetrisModelV1::INPUT_FEATURES) {
                 std::cerr << "defined number of inputs to TetrisModelV1 does not match amount passed in TetrisModelV1Runner" << std::endl;
                 abort();
@@ -73,8 +65,4 @@ int playGame(TetrisModelV1 & model, SimplifiedTetris::Game & game) {
         ++numMoves;
         // std::cout << std::endl;
     }
-}
-
-void TetrisModelV1Runner::reset(seed_type seed) {
-    game = SimplifiedTetris::Game(seed);
 }

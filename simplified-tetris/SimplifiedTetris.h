@@ -222,7 +222,7 @@ namespace SimplifiedTetris {
       Tetromino getFalling() const { return fallingPiece; };
       Board const & getBoard() const { return board; };
       void printBoard() const;
-      std::vector<Move> getPlacements();
+      void getPlacements(std::vector<Move> &);
       std::tuple<Board *, int> previewMove(Move const &) const;
       int doMove(Move const &);
   };

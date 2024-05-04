@@ -7,7 +7,8 @@ std::tuple<int, int> playGame(TetrisModelV1 & model, SimplifiedTetris::Game & ga
     int numMoves = 0;
     int totalRowsCleared = 0;
     while (true) {
-        auto const placements = game.getPlacements();
+        vector<SimplifiedTetris::Move> placements;
+        game.getPlacements(placements);
         if (placements.empty()) {
             // std::cout << "Out of moves. Lasted " << numMoves << " moves." << std::endl;
             return {numMoves, totalRowsCleared};

@@ -78,8 +78,7 @@ namespace SimplifiedTetris {
       board.print();
   }
 
-  std::vector<Move> Game::getPlacements() {
-      std::vector<Move> validPlacements;
+  void Game::getPlacements(std::vector<Move> & placementsList) {
       for (int f = 0; f < 4; ++f) {
           for (int pieceX = -2; pieceX <= Board::WIDTH - 2; ++pieceX) {
               for (int pieceY = Board::HEIGHT + 1; pieceY > 0; --pieceY) {
@@ -121,7 +120,7 @@ namespace SimplifiedTetris {
                   } // end for subX
                   if (onFloor) {
                       if (locationValid) {
-                          validPlacements.push_back({fallingPiece, f, pieceX, pieceY});
+                          placementsList.push_back({fallingPiece, f, pieceX, pieceY});
                       }
 
                       // we have been moving the tetromino down a column and it has hit the floor,
@@ -135,7 +134,6 @@ namespace SimplifiedTetris {
               } // end for pieceY
           } // end for pieceX
       } // end for f
-      return validPlacements;
   }
 
   int Game::clearRowsOnBoard(SimplifiedTetris::Board & board) {

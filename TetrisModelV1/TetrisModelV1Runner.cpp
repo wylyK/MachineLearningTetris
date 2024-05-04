@@ -16,7 +16,8 @@ int playGame(TetrisModelV1 & model, SimplifiedTetris::Game & game) {
                                                  TetrisModelV1::INPUT_FEATURES});
         auto modelInputAccessor = modelInput.accessor<float, 2>();
         for (int n = 0; n < placements.size(); ++n) {
-            auto const newBoard = game.previewMove(placements[n]);
+            auto const preview_result = game.previewMove(placements[n]);
+            auto const newBoard = std::get<0>(preview_result);
             int64_t modelInputIdx = 0;
 
             vector<int> const colHeights = feats::columnHeights(*newBoard);

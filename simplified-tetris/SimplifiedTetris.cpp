@@ -165,11 +165,11 @@ namespace SimplifiedTetris {
       return rowsCleared;
   }
 
-  Board * Game::previewMove(Move const & move) const {
+  std::tuple<Board *, int> Game::previewMove(Move const & move) const {
       auto * const boardCopy = new Board(board);
       placePieceOnBoard(*boardCopy, move);
-      clearRowsOnBoard(*boardCopy);
-      return boardCopy;
+      int rowsCleared = clearRowsOnBoard(*boardCopy);
+      return {boardCopy, rowsCleared};
   }
 
   int Game::doMove(Move const & move) {

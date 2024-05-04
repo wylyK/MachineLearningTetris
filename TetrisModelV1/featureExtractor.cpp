@@ -2,18 +2,18 @@
 
 namespace feats {
 
- int rowsCleared(SimplifiedTetris::Board const & b) {
-     int cleared = 0;
-     for (int j = 0; j < SimplifiedTetris::Board::HEIGHT;j++) {
-
-         bool isCleared = true;
-         for (int i = 0; i < SimplifiedTetris::Board::WIDTH; i++) {
-             isCleared = isCleared && b.board[j][i];
-         }
-         cleared += isCleared ? 1 : 0;
-     }
-     return cleared;
- }
+ // int rowsCleared(SimplifiedTetris::Board const & b) {
+ //     int cleared = 0;
+ //     for (int j = 0; j < SimplifiedTetris::Board::HEIGHT;j++) {
+ //
+ //         bool isCleared = true;
+ //         for (int i = 0; i < SimplifiedTetris::Board::WIDTH; i++) {
+ //             isCleared = isCleared && b.board[j][i];
+ //         }
+ //         cleared += isCleared ? 1 : 0;
+ //     }
+ //     return cleared;
+ // }
 
   int getNumHoles(SimplifiedTetris::Board const & board) {
       bool filled[SimplifiedTetris::Board::WIDTH] = {};
@@ -68,14 +68,6 @@ namespace feats {
   //     return g.clearedRows().size();
   // }
 
-  int maxHeight(vector<int> const & heights) {
-      int max = 0;
-      for (int const height : heights) {
-          max = std::max(max, height);
-      }
-      return max;
-  }
-
   // analysis is done per row
   HorizontalFeatures getHorizontalFeatures(SimplifiedTetris::Board const & board) {
       int numRowTrans = 0;
@@ -99,6 +91,7 @@ namespace feats {
       int numColTrans = 0;
       int numOverHoles = 0;
       vector<int> heights(SimplifiedTetris::Board::WIDTH);
+      int maxColHeight = 0;
       for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
           bool reachedHole = false;
           bool prevEmpty = board.board[0][col] == SimplifiedTetris::Tetromino::null;
@@ -119,7 +112,11 @@ namespace feats {
           heights[col] = 0;
           for (int y = SimplifiedTetris::Board::HEIGHT - 1; y >= 0; --y) {
               if (board.board[y][col] != SimplifiedTetris::null) {
-                  heights[col] = y + 1;
+                  int const height = y + 1;
+                  heights[col] = height;
+                  if (height > maxColHeight) {
+                      maxColHeight = height;
+                  }
                   break;
               }
           }
@@ -127,7 +124,8 @@ namespace feats {
       return {
           .colHeights=heights, // TODO: avoid copy
           .numOverHoles=numOverHoles,
-          .numColTrans=numColTrans
+          .numColTrans=numColTrans,
+          .maxColHeight=maxColHeight
       };
   }
 

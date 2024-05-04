@@ -45,10 +45,10 @@ std::tuple<int, int> playGame(TetrisModelV1 & model, SimplifiedTetris::Game & ga
             modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumOverHoles(*newBoard));
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numRowTrans);
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(verticalFeatures.numColTrans);
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(verticalFeatures.numColTrans);
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numRowTrans);
             ++modelInputIdx;
 
             modelInputAccessor[n][modelInputIdx] = static_cast<float>(rowsCleared);

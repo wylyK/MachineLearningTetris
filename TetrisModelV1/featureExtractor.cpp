@@ -95,36 +95,6 @@ namespace feats {
       return numOverHoles;
   }
 
-  int getNumRowTrans(SimplifiedTetris::Board const & board) {
-      int numRowTrans = 0;
-      for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
-          bool is_prev_used = board.board[SimplifiedTetris::Board::WIDTH - 1][col] != SimplifiedTetris::Tetromino::null;
-          for (int row = SimplifiedTetris::Board::HEIGHT - 2; row >= 0; --row) {
-              bool is_curr_used = board.board[row][col] != SimplifiedTetris::Tetromino::null;
-              if (is_prev_used != is_curr_used) {
-                  numRowTrans++;
-              }
-              is_prev_used = is_curr_used;
-          }
-      }
-      return numRowTrans;
-  }
-
-  int getNumColTrans(SimplifiedTetris::Board const & board) {
-      int numColTrans = 0;
-      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
-          bool is_prev_used = board.board[row][0] != SimplifiedTetris::Tetromino::null;
-          for (int col = 1; col < SimplifiedTetris::Board::WIDTH; ++col) {
-              bool is_curr_used = board.board[row][col] != SimplifiedTetris::Tetromino::null;
-              if (is_prev_used != is_curr_used) {
-                  numColTrans++;
-              }
-              is_prev_used = is_curr_used;
-          }
-      }
-      return numColTrans;
-  }
-
   // int rowsCleared(SimplifiedTetris::Game const & g) {
   //     return g.clearedRows().size();
   // }
@@ -140,9 +110,9 @@ namespace feats {
   // analysis is done per row
   HorizontalFeatures getHorizontalFeatures(SimplifiedTetris::Board const & board) {
       int numRowTrans = 0;
-      for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
-          bool is_prev_used = board.board[SimplifiedTetris::Board::WIDTH - 1][col] != SimplifiedTetris::Tetromino::null;
-          for (int row = SimplifiedTetris::Board::HEIGHT - 2; row >= 0; --row) {
+      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
+          bool is_prev_used = board.board[row][0] != SimplifiedTetris::Tetromino::null;
+          for (int col = 1; col < SimplifiedTetris::Board::WIDTH; ++col) {
               bool is_curr_used = board.board[row][col] != SimplifiedTetris::Tetromino::null;
               if (is_prev_used != is_curr_used) {
                   numRowTrans++;
@@ -157,9 +127,9 @@ namespace feats {
 
   VerticalFeatures getVerticalFeatures(SimplifiedTetris::Board const & board) {
       int numColTrans = 0;
-      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
-          bool is_prev_used = board.board[row][0] != SimplifiedTetris::Tetromino::null;
-          for (int col = 1; col < SimplifiedTetris::Board::WIDTH; ++col) {
+      for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
+          bool is_prev_used = board.board[SimplifiedTetris::Board::WIDTH - 1][col] != SimplifiedTetris::Tetromino::null;
+          for (int row = SimplifiedTetris::Board::HEIGHT - 2; row >= 0; --row) {
               bool is_curr_used = board.board[row][col] != SimplifiedTetris::Tetromino::null;
               if (is_prev_used != is_curr_used) {
                   numColTrans++;

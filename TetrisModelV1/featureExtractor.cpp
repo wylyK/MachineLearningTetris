@@ -125,7 +125,7 @@ namespace feats {
       return numRowTrans;
   }
   //analysis is done per row
-  std::vector horizontalFeatures(SimplifiedTetris::Board const & board){
+  std::tuple<int, int> horizontalFeatures(SimplifiedTetris::Board const & board){
     int numRowTrans = 0;
       for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row){
           bool is_prev_used = board.board[row][0] != SimplifiedTetris::Tetromino::null;
@@ -140,7 +140,7 @@ namespace feats {
 
   }
   //analysis is done per column
-  std::tuple<vect> verticalFeatures(SimplifiedTetris::Board const & board){
+  std::tuple<vector<int>,int,int> verticalFeatures(SimplifiedTetris::Board const & board){
       int numOverHoles = 0;
       vector<int> heights(10);
       int numColTrans = 0;

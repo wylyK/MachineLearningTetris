@@ -10,6 +10,7 @@ TetrisModelV1Trainer::TetrisModelV1Trainer(size_t population, seed_type seed) :
     game(random())
 {
     for (size_t i = 0; i < population; ++i) {
+        // TODO: implement destructor
         models.push_back(new TetrisModelV1());
     }
 }
@@ -41,8 +42,9 @@ void TetrisModelV1Trainer::trainRound() {
         return results[i] > results[j];
     });
 
+    // move the 20 best performing models to the start front of the array
     for (int i = 0; i < k; ++i) {
-        models[i] = models[idxs[i]];
+        std::swap(models[i], models[idxs[i]]);
     }
 
     int topKSum = 0;

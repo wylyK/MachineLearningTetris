@@ -47,20 +47,18 @@ void TetrisModelV1Trainer::trainRound() {
         std::swap(models[i], models[idxs[i]]);
     }
 
-    int topKSum = 0;
+    int topKSumPieces = 0;
     // std::cout << "Top " << k << " results: ";
     for (int i = 0; i < k; ++i) {
         // std::cout << results[idxs[i]] << ", ";
-        topKSum += results[idxs[i]];
+        topKSumPieces += results[idxs[i]];
     }
     // std::cout << std::endl;
-    std::cout << "Mean of top " << k << ": " << static_cast<float>(topKSum) / k << std::endl;
+    std::cout << "Mean pieces of top " << k << ": " << static_cast<float>(topKSumPieces) / k << std::endl;
 
     std::uniform_int_distribution<size_t> randomSampler(0, k);
     for (int i = k; i < population; ++i) {
         torch::Tensor const & sourceParams = models[randomSampler(random)]->params;
-        // models[i]->setParams(torch::normal(sourceParams, torch::full(TetrisModelV1::NUM_PARAMETERS, GENETIC_STDDEV),
-        //                                    TetrisModelV1::NUM_PARAMETERS));
         models[i]->setParams(at::normal(sourceParams, TetrisModelV1::NUM_PARAMETERS));
     }
 }

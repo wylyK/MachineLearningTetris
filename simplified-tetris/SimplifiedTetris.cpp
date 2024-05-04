@@ -172,10 +172,11 @@ namespace SimplifiedTetris {
       return boardCopy;
   }
 
-  void Game::doMove(Move const & move) {
+  int Game::doMove(Move const & move) {
       placePieceOnBoard(board, move);
-      clearRowsOnBoard(board);
+      int const rowsCleared = clearRowsOnBoard(board);
       fallingPiece = getNext();
+      return rowsCleared;
   }
 
 }

@@ -138,47 +138,76 @@ namespace SimplifiedTetris {
       return validPlacements;
   }
 
-  std::vector<int> Game::clearedRows() const {
-      std::vector<int> rows;
-      for (int j = 0; j < Board::HEIGHT; j++) {
-          bool cleared = true;
-          for (int i = 0; i < Board::WIDTH; i++) {
-              cleared = cleared && board.board[j][i];
-          }
-          if (cleared) {
-              rows.push_back(j);
-          }
-      }
-      return rows;
-  }
-
-  void Game::clearFull() {
-      std::vector<int> full = clearedRows();
-      auto const * boardCopy = new Board(board);
+  void Game::clearRowsOnBoard(SimplifiedTetris::Board & board) {
       int falls = 0;
-      int nextCleared = 0;
-      for (int j = 0; j < Board::HEIGHT; j++){
-          if (j == full[nextCleared]) {
-              for (int i = 0; i < Board::WIDTH; i++){
+      for (int j = 0; j < Board::HEIGHT; j++) {
+
+          bool full = true;
+          for (int i = 0; i < Board::WIDTH; i++) {
+              if (board.board[j][i] == Tetromino::null) {
+                  full = false;
+              }
+          }
+
+          if (full) {
+              // null the row (required for edge case at the top of the board)
+              for (int i = 0; i < Board::WIDTH; i++) {
                   board.board[j][i] = null;
               }
-              falls++;
-              nextCleared < full.size() - 1 ? nextCleared++: 0;
-          }
-          else {
+              ++falls;
+          } else if (falls > 0) {
               for (int i = 0; i < Board::WIDTH; i++) {
-                  if (falls > 0) {
-                      board.board[j - falls][i] = board.board[j][i];
-                      board.board[j][i] = null;
-                  }
+                  board.board[j - falls][i] = board.board[j][i];
+                  board.board[j][i] = null;
               }
           }
       }
   }
+
+  // std::vector<int> Game::clearedRows() const {
+  //     std::vector<int> rows;
+  //     for (int j = 0; j < Board::HEIGHT; j++) {
+  //         bool cleared = true;
+  //         for (int i = 0; i < Board::WIDTH; i++) {
+  //             if (board.board[j][i] == Tetromino::null) {
+  //                 cleared = false;
+  //             }
+  //         }
+  //         if (cleared) {
+  //             rows.push_back(j);
+  //         }
+  //     }
+  //     return rows;
+  // }
+
+  // void Game::clearFull() {
+  //     std::vector<int> full = clearedRows();
+  //     auto const * boardCopy = new Board(board);
+  //     int falls = 0;
+  //     int nextCleared = 0;
+  //     for (int j = 0; j < Board::HEIGHT; j++){
+  //         if (j == full[nextCleared]) {
+  //             for (int i = 0; i < Board::WIDTH; i++){
+  //                 board.board[j][i] = null;
+  //             }
+  //             falls++;
+  //             nextCleared < full.size() - 1 ? nextCleared++: 0;
+  //         }
+  //         else {
+  //             for (int i = 0; i < Board::WIDTH; i++) {
+  //                 if (falls > 0) {
+  //                     board.board[j - falls][i] = board.board[j][i];
+  //                     board.board[j][i] = null;
+  //                 }
+  //             }
+  //         }
+  //     }
+  // }
 
   Board * Game::previewMove(Move const & move) {
       auto * const boardCopy = new Board(board);
       placePieceOnBoard(*boardCopy, move);
+      clearRowsOnBoard(*boardCopy);
       return boardCopy;
   }
 

@@ -214,6 +214,7 @@ namespace SimplifiedTetris {
       void initializeNextQueue();
       Tetromino getNext();
       static void placePieceOnBoard(Board &, Move const &);
+      static void clearRowsOnBoard(Board &);
     public:
       typedef Bag::seed_type seed_type;
       explicit Game(seed_type);
@@ -222,8 +223,6 @@ namespace SimplifiedTetris {
       Board const & getBoard() const { return board; };
       void printBoard() const;
       std::vector<Move> getPlacements();
-      std::vector<int> clearedRows() const;
-      void clearFull();
       Board * previewMove(Move const &);
       void doMove(Move const &);
   };

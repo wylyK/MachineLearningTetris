@@ -8,7 +8,7 @@ TetrisModelV1Trainer::TetrisModelV1Trainer(size_t population, seed_type seed) :
     population(population),
     random(seed),
     game(random()),
-    torchGen(at::detail::createCPUGenerator(random()))
+    torchGen(at::detail::createCPUGenerator(random()))  // TODO: use bracket initialization?
 {
     for (size_t i = 0; i < population; ++i) {
         // TODO: implement destructor
@@ -40,7 +40,7 @@ void TetrisModelV1Trainer::trainRound() {
 
     // sort largest to smallest
     std::partial_sort(&idxs[0], &idxs[k], &idxs[population], [&results](int const & i, int const & j) {
-        return std::get<0>(results[i]) > std::get<1>(results[j]);
+        return std::get<0>(results[i]) > std::get<0>(results[j]);
     });
 
     // move the 20 best performing models to the start front of the array

@@ -21,48 +21,43 @@ namespace feats {
 
   // analysis is done per row
   HorizontalFeatures getHorizontalFeatures(SimplifiedTetris::Board const & board) {
-      int numRowTrans = 0;
-      int numUnused = 0;
+      HorizontalFeatures outFeats{
+          .colHeights=vector<int>(SimplifiedTetris::Board::WIDTH),
+          .maxColHeight=0,
+          .numUnused=0,
+          .numHoles=0,
+          .numWells=0,
+          .numRowTrans=0
+      };
       bool filled[SimplifiedTetris::Board::WIDTH] = {};
-      int holes = 0;
-      int wells = 0;
-      vector<int> heights(SimplifiedTetris::Board::WIDTH);
-      int maxColHeight = 0;
       for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
           bool prevEmpty = board.board[row][0] == SimplifiedTetris::Tetromino::null;
           for (int x = 0; x < SimplifiedTetris::Board::WIDTH; ++x) {
               bool const curEmpty = board.board[row][x] == SimplifiedTetris::Tetromino::null;
               if (curEmpty) {
-                  ++numUnused;
+                  ++outFeats.numUnused;
                   if (filled[x]) {
-                      ++holes;
+                      ++outFeats.numHoles;
                   } else if ((x == 0 || board.board[row][x - 1] != SimplifiedTetris::Tetromino::null)
                              && (x == SimplifiedTetris::Board::WIDTH - 1
                                  || board.board[row][x + 1] != SimplifiedTetris::Tetromino::null)) {
-                      ++wells;
+                      ++outFeats.numWells;
                   }
               } else if (!filled[x]) {
                   filled[x] = true;
                   int const height = row + 1;
-                  heights[x] = height;
-                  if (height > maxColHeight) {
-                      maxColHeight = height;
+                  outFeats.colHeights[x] = height;
+                  if (height > outFeats.maxColHeight) {
+                      outFeats.maxColHeight = height;
                   }
               }
               if (curEmpty != prevEmpty) {
-                  numRowTrans++;
+                  outFeats.numRowTrans++;
               }
               prevEmpty = curEmpty;
           }
       }
-      return {
-          .colHeights=heights, // TODO: avoid copy
-          .maxColHeight=maxColHeight,
-          .numUnused=numUnused,
-          .numHoles=holes,
-          .numWells=wells,
-          .numRowTrans=numRowTrans
-      };
+      return outFeats;
   }
 
   // analysis is done per column

@@ -27,6 +27,7 @@ std::tuple<int, int> playGame(TetrisModelV1 & model, SimplifiedTetris::Game & ga
 
             vector<int> const colHeights = feats::columnHeights(*newBoard);
             for (int const & colHeight : colHeights) {
+            // for (int const & colHeight : verticalFeatures.colHeights) {
                 modelInputAccessor[n][modelInputIdx] = static_cast<float>(colHeight);
 
                 ++modelInputIdx;
@@ -42,7 +43,7 @@ std::tuple<int, int> playGame(TetrisModelV1 & model, SimplifiedTetris::Game & ga
             modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumWells(*newBoard));
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = verticalFeatures.numOverHoles;
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(verticalFeatures.numOverHoles);
             ++modelInputIdx;
 
             modelInputAccessor[n][modelInputIdx] = static_cast<float>(verticalFeatures.numColTrans);

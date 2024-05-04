@@ -23,7 +23,7 @@ vector<int> TetrisModelV1Trainer::runPopulation() {
         // TODO: make this more efficient
         game = SimplifiedTetris::Game(random());
 
-        results.push_back(playGame(*models[i], game));
+        results.push_back(std::get<0>(playGame(*models[i], game)));
     }
     return results;
 }

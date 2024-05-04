@@ -22,31 +22,37 @@ std::tuple<int, int> playGame(TetrisModelV1 & model, SimplifiedTetris::Game & ga
             auto const rowsCleared = std::get<1>(preview_result);
             int64_t modelInputIdx = 0;
 
-            vector<int> const colHeights = feats::columnHeights(*newBoard);
-            for (int const & colHeight : colHeights) {
-                modelInputAccessor[n][modelInputIdx] = static_cast<float>(colHeight);
+            feats::HorizontalFeatures const horizontalFeatures = feats::getHorizontalFeatures(*newBoard);
+            feats::VerticalFeatures const verticalFeatures = feats::getVerticalFeatures(*newBoard);
 
+            for (int const & colHeight : horizontalFeatures.colHeights) {
+                modelInputAccessor[n][modelInputIdx] = static_cast<float>(colHeight);
                 ++modelInputIdx;
             }
 
             // divide by board size to normalize between 0 and 1
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumUnused(*newBoard)) / SimplifiedTetris::Board::NUM_CELLS;
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numUnused) / SimplifiedTetris::Board::NUM_CELLS;
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumHoles(*newBoard));
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numHoles);
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumWells(*newBoard));
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numWells);
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumOverHoles(*newBoard));
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(verticalFeatures.numOverHoles);
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumRowTrans(*newBoard));
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(verticalFeatures.numColTrans);
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumColTrans(*newBoard));
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numRowTrans);
             ++modelInputIdx;
+
+            // std::cout << std::endl;
+            // newBoard->print();
+            // std::cout << "num col trans: " << verticalFeatures.numColTrans << std::endl;
+            // std::cout << "num row trans: " << horizontalFeatures.numRowTrans << std::endl;
 
             modelInputAccessor[n][modelInputIdx] = static_cast<float>(rowsCleared);
             ++modelInputIdx;

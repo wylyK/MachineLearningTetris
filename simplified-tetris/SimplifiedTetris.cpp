@@ -137,29 +137,42 @@ namespace SimplifiedTetris {
   }
 
   int Game::clearRowsOnBoard(SimplifiedTetris::Board & board) {
+      // std::cout << "before:" << std::endl;
+      // board.print();
+
       int rowsCleared = 0;
-      for (int j = 0; j < Board::HEIGHT; j++) {
+      for (int row = 0; row < Board::HEIGHT; ++row) {
 
           bool full = true;
-          for (int i = 0; i < Board::WIDTH; i++) {
-              if (board.board[j][i] == Tetromino::null) {
+          for (int x = 0; x < Board::WIDTH; ++x) {
+              if (board.board[row][x] == Tetromino::null) {
                   full = false;
+                  break;
               }
           }
 
           if (full) {
-              // null the row (required for edge case at the top of the board)
-              for (int i = 0; i < Board::WIDTH; i++) {
-                  board.board[j][i] = null;
-              }
               ++rowsCleared;
           } else if (rowsCleared > 0) {
-              for (int i = 0; i < Board::WIDTH; i++) {
-                  board.board[j - rowsCleared][i] = board.board[j][i];
-                  board.board[j][i] = null;
+              for (int x = 0; x < Board::WIDTH; ++x) {
+                  board.board[row - rowsCleared][x] = board.board[row][x];
               }
           }
       }
+
+      // make the new rows at the top empty
+      for (int row = Board::HEIGHT - rowsCleared; row < Board::HEIGHT; ++row) {
+          for (int x = 0; x < Board::WIDTH; ++x) {
+              board.board[row][x] = Tetromino::null;
+          }
+      }
+
+      // std::cout << "after:" << std::endl;
+      // board.print();
+      // if (rowsCleared) {
+      //     abort();
+      // }
+
       return rowsCleared;
   }
 

@@ -214,7 +214,7 @@ namespace SimplifiedTetris {
       void initializeNextQueue();
       Tetromino getNext();
       static void placePieceOnBoard(Board &, Move const &);
-      static void clearRowsOnBoard(Board &);
+      static int clearRowsOnBoard(Board &);
     public:
       typedef Bag::seed_type seed_type;
       explicit Game(seed_type);

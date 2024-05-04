@@ -22,7 +22,7 @@ namespace feats {
   // analysis is done per row
   HorizontalFeatures getHorizontalFeatures(SimplifiedTetris::Board const & board) {
       HorizontalFeatures outFeats{
-          .colHeights=vector<int>(SimplifiedTetris::Board::WIDTH),
+          .colHeights={},  // initialize to all zeros
           .maxColHeight=0,
           .numUnused=0,
           .numHoles=0,

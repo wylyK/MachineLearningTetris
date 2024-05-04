@@ -17,7 +17,7 @@ namespace feats {
 
   // analysis is done per row
   struct HorizontalFeatures {
-      vector<int> colHeights;
+      int colHeights[SimplifiedTetris::Board::WIDTH];
       int maxColHeight;
       int numUnused;
       int numHoles;

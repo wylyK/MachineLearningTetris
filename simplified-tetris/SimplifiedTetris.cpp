@@ -141,6 +141,7 @@ namespace SimplifiedTetris {
       // board.print();
 
       int rowsCleared = 0;
+      int firstRowPreCleared = Board::HEIGHT;
       for (int row = 0; row < Board::HEIGHT; ++row) {
 
           bool full = true;
@@ -154,14 +155,21 @@ namespace SimplifiedTetris {
           if (full) {
               ++rowsCleared;
           } else if (rowsCleared > 0) {
+              bool const preClearRow = row >= Board::HEIGHT - rowsCleared;
+              if (preClearRow && firstRowPreCleared == Board::HEIGHT) {
+                  firstRowPreCleared = row;
+              }
               for (int x = 0; x < Board::WIDTH; ++x) {
                   board.board[row - rowsCleared][x] = board.board[row][x];
+                  if (preClearRow) {
+                      board.board[row][x] = Tetromino::null;
+                  }
               }
           }
       }
 
       // make the new rows at the top empty
-      for (int row = Board::HEIGHT - rowsCleared; row < Board::HEIGHT; ++row) {
+      for (int row = Board::HEIGHT - rowsCleared; row < firstRowPreCleared; ++row) {
           for (int x = 0; x < Board::WIDTH; ++x) {
               board.board[row][x] = Tetromino::null;
           }

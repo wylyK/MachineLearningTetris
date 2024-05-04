@@ -15,23 +15,6 @@ namespace feats {
  //     return cleared;
  // }
 
-  int getNumHoles(SimplifiedTetris::Board const & board) {
-      bool filled[SimplifiedTetris::Board::WIDTH] = {};
-      int holes = 0;
-      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
-          for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
-              if (board.board[row][col] == SimplifiedTetris::Tetromino::null) {
-                  if (filled[col]) {
-                      ++holes;
-                  }
-              } else {
-                  filled[col] = true;
-              }
-          }
-      }
-      return holes;
-  }
-
   int getNumWells(SimplifiedTetris::Board const & board) {
       bool filled[SimplifiedTetris::Board::WIDTH] = {};
       int wells = 0;
@@ -56,13 +39,30 @@ namespace feats {
   //     return g.clearedRows().size();
   // }
 
+  int getNumHoles(SimplifiedTetris::Board const & board) {
+      bool filled[SimplifiedTetris::Board::WIDTH] = {};
+      int holes = 0;
+      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
+          for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
+              if (board.board[row][col] == SimplifiedTetris::Tetromino::null) {
+                  if (filled[col]) {
+                      ++holes;
+                  }
+              } else {
+                  filled[col] = true;
+              }
+          }
+      }
+      return holes;
+  }
+
   // analysis is done per row
   HorizontalFeatures getHorizontalFeatures(SimplifiedTetris::Board const & board) {
       int numRowTrans = 0;
       int numUnused = 0;
       for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
           bool prevEmpty = board.board[row][0] == SimplifiedTetris::Tetromino::null;
-          for (int col = 1; col < SimplifiedTetris::Board::WIDTH; ++col) {
+          for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
               bool const curEmpty = board.board[row][col] == SimplifiedTetris::Tetromino::null;
               if (curEmpty) {
                   ++numUnused;

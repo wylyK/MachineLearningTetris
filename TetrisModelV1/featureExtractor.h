@@ -19,8 +19,8 @@ namespace feats {
   struct HorizontalFeatures {
       int numRowTrans;
       int numUnused;
+      int numHoles;
       // int numWells;
-      // int numHoles;
       // int rowsCleared;
   };
 

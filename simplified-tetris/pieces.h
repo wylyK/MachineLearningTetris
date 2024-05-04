@@ -14,18 +14,17 @@ namespace SimplifiedTetris {
       Z = 7
   };
   static constexpr int PIECE_SIZE[] = {
-      0, // empty
+      0, // Tetromino::null
       3, // O
       4, // I
       3, // T
       3, // L
       3, // J
       3, // S
-      3 // Z
+      3  // Z
   };
   static constexpr Tetromino FACINGS[8][4][4][4] = {
-      {}, //empty
-      // O
+      {}, // Tetromino::null
       { // O
           // N
           {{Tetromino::null, Tetromino::O,    Tetromino::O},
@@ -44,8 +43,7 @@ namespace SimplifiedTetris {
            {Tetromino::null, Tetromino::O,    Tetromino::O},
            {Tetromino::null, Tetromino::null, Tetromino::null}}
       },
-      // I
-      {
+      { // I
           // N
           {{Tetromino::null, Tetromino::null, Tetromino::null, Tetromino::null},
            {Tetromino::I,    Tetromino::I,    Tetromino::I,    Tetromino::I},

@@ -11,7 +11,7 @@ namespace feats {
   struct VerticalFeatures {
       // vector<int> heights;
       // int numOverHoles;
-      // int numColTrans;
+      int numColTrans;
       // int maxHeight;
   };
 
@@ -25,6 +25,7 @@ namespace feats {
   };
 
   HorizontalFeatures getHorizontalFeatures(SimplifiedTetris::Board const &);
+  VerticalFeatures getVerticalFeatures(SimplifiedTetris::Board const &);
 
   vector<int> columnHeights(SimplifiedTetris::Board const &);
   int maxHeight(vector<int> const & heights);

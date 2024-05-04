@@ -155,6 +155,23 @@ namespace feats {
       };
   }
 
+  VerticalFeatures getVerticalFeatures(SimplifiedTetris::Board const & board) {
+      int numColTrans = 0;
+      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
+          bool is_prev_used = board.board[row][0] != SimplifiedTetris::Tetromino::null;
+          for (int col = 1; col < SimplifiedTetris::Board::WIDTH; ++col) {
+              bool is_curr_used = board.board[row][col] != SimplifiedTetris::Tetromino::null;
+              if (is_prev_used != is_curr_used) {
+                  numColTrans++;
+              }
+              is_prev_used = is_curr_used;
+          }
+      }
+      return {
+          .numColTrans=numColTrans
+      };
+  }
+
   // //analysis is done per row
   // std::tuple<int, int> horizontalFeatures(SimplifiedTetris::Board const & board) {
   //     int numRowTrans = 0;

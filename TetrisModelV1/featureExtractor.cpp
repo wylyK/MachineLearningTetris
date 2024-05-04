@@ -65,10 +65,10 @@ namespace feats {
 
   // analysis is done per column
   VerticalFeatures getVerticalFeatures(SimplifiedTetris::Board const & board) {
-      int numColTrans = 0;
-      int numOverHoles = 0;
-      vector<int> heights(SimplifiedTetris::Board::WIDTH);
-      int maxColHeight = 0;
+      VerticalFeatures outFeats{
+          .numOverHoles=0,
+          .numColTrans=0
+      };
       for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
           bool reachedHole = false;
           bool prevEmpty = board.board[0][col] == SimplifiedTetris::Tetromino::null;
@@ -77,33 +77,15 @@ namespace feats {
               if (curEmpty) {
                   reachedHole = true;
               } else if (reachedHole) {
-                  ++numOverHoles;
+                  ++outFeats.numOverHoles;
               }
               if (curEmpty != prevEmpty) {
-                  ++numColTrans;
+                  ++outFeats.numColTrans;
               }
               prevEmpty = curEmpty;
           }
       }
-      // for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
-      //     heights[col] = 0;
-      //     for (int y = SimplifiedTetris::Board::HEIGHT - 1; y >= 0; --y) {
-      //         if (board.board[y][col] != SimplifiedTetris::null) {
-      //             int const height = y + 1;
-      //             heights[col] = height;
-      //             if (height > maxColHeight) {
-      //                 maxColHeight = height;
-      //             }
-      //             break;
-      //         }
-      //     }
-      // }
-      return {
-          // .colHeights=heights, // TODO: avoid copy
-          .numOverHoles=numOverHoles,
-          .numColTrans=numColTrans,
-          // .maxColHeight=maxColHeight
-      };
+      return outFeats;
   }
 
   // //analysis is done per column

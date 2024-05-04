@@ -18,7 +18,7 @@ namespace feats {
   // analysis is done per row
   struct HorizontalFeatures {
       int numRowTrans;
-      // int numUnused;
+      int numUnused;
       // int numWells;
       // int numHoles;
       // int rowsCleared;

@@ -40,8 +40,8 @@ namespace feats {
               if (board.board[row][col] == SimplifiedTetris::Tetromino::null) {
                   if (!filled[col]
                       && (col == 0 || board.board[row][col - 1] != SimplifiedTetris::Tetromino::null)
-                      && (   col == SimplifiedTetris::Board::WIDTH - 1
-                             || board.board[row][col + 1] != SimplifiedTetris::Tetromino::null)) {
+                      && (col == SimplifiedTetris::Board::WIDTH - 1
+                          || board.board[row][col + 1] != SimplifiedTetris::Tetromino::null)) {
                       ++wells;
                   }
               } else {
@@ -52,18 +52,6 @@ namespace feats {
       return wells;
   }
 
-  int getNumUnused(SimplifiedTetris::Board const & board) {
-      int numUnused = 0;
-      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
-          for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
-              if (board.board[row][col] == SimplifiedTetris::Tetromino::null) {
-                  numUnused++;
-              }
-          }
-      }
-      return numUnused;
-  }
-
   // int rowsCleared(SimplifiedTetris::Game const & g) {
   //     return g.clearedRows().size();
   // }
@@ -71,18 +59,23 @@ namespace feats {
   // analysis is done per row
   HorizontalFeatures getHorizontalFeatures(SimplifiedTetris::Board const & board) {
       int numRowTrans = 0;
+      int numUnused = 0;
       for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
-          bool is_prev_used = board.board[row][0] != SimplifiedTetris::Tetromino::null;
+          bool prevEmpty = board.board[row][0] == SimplifiedTetris::Tetromino::null;
           for (int col = 1; col < SimplifiedTetris::Board::WIDTH; ++col) {
-              bool is_curr_used = board.board[row][col] != SimplifiedTetris::Tetromino::null;
-              if (is_prev_used != is_curr_used) {
+              bool const curEmpty = board.board[row][col] == SimplifiedTetris::Tetromino::null;
+              if (curEmpty) {
+                  ++numUnused;
+              }
+              if (curEmpty != prevEmpty) {
                   numRowTrans++;
               }
-              is_prev_used = is_curr_used;
+              prevEmpty = curEmpty;
           }
       }
       return {
-          .numRowTrans=numRowTrans
+          .numRowTrans=numRowTrans,
+          .numUnused=numUnused
       };
   }
 
@@ -102,7 +95,7 @@ namespace feats {
               } else if (reachedHole) {
                   ++numOverHoles;
               }
-              if (prevEmpty != curEmpty) {
+              if (curEmpty != prevEmpty) {
                   ++numColTrans;
               }
               prevEmpty = curEmpty;

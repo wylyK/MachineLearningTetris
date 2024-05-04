@@ -31,7 +31,7 @@ std::tuple<int, int> playGame(TetrisModelV1 & model, SimplifiedTetris::Game & ga
             }
 
             // divide by board size to normalize between 0 and 1
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumUnused(*newBoard)) / SimplifiedTetris::Board::NUM_CELLS;
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numUnused) / SimplifiedTetris::Board::NUM_CELLS;
             ++modelInputIdx;
 
             modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumHoles(*newBoard));

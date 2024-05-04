@@ -124,7 +124,43 @@ namespace feats {
       }
       return numRowTrans;
   }
+  //analysis is done per row
+  std::vector horizontalFeatures(SimplifiedTetris::Board const & board){
+    int numRowTrans = 0;
+      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row){
+          bool is_prev_used = board.board[row][0] != SimplifiedTetris::Tetromino::null;
+          for (int col = 1; col < SimplifiedTetris::Board::WIDTH; ++col){
+              bool is_curr_used = board.board[row][col] != SimplifiedTetris::Tetromino::null;
+              if (is_prev_used != is_curr_used) {
+                  numRowTrans++;
+              }
+              is_prev_used = is_curr_used;
+          }
+      }
 
+  }
+  //analysis is done per column
+  std::tuple<vect> verticalFeatures(SimplifiedTetris::Board const & board){
+      int numOverHoles = 0;
+      vector<int> heights(10);
+      int numColTrans = 0;
+
+      for (int row = 0; row < SimplifiedTetris::Board::WIDTH; row++){
+          bool reachedHole = false;
+          bool is_prev_used = board.board[row][0] != SimplifiedTetris::Tetromino::null;
+          for (int col = SimplifiedTetris::Board::HEIGHT - 1;col > -1; col--){
+              if (board.board[row][col] == SimplifiedTetris::Tetromino::null) {
+                  reachedHole = true;
+              }
+              if(board.board[row][col] != SimplifiedTetris::Tetromino::null && reachedHole) {
+                  numOverHoles++;
+              }
+
+          }
+      }
+
+
+  }
   std::pair<int, int> getNumTrans(SimplifiedTetris::Board const & board) {
       std::pair<int, int> numTrans;
 

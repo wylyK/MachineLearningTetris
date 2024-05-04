@@ -11,7 +11,7 @@ TetrisModelV1Trainer::TetrisModelV1Trainer(size_t population, seed_type seed) :
 {
     for (size_t i = 0; i < population; ++i) {
         // TODO: implement destructor
-        models.push_back(new TetrisModelV1());
+        models.push_back(new TetrisModelV1(random()));
     }
 }
 

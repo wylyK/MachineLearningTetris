@@ -33,9 +33,9 @@ class TetrisModelV1 {
   private:
     Net net;
   public:
-    TetrisModelV1() : TetrisModelV1(torch::kFloat32) {}
+    explicit TetrisModelV1(uint64_t seed) : TetrisModelV1(seed, torch::kFloat32) {}
     explicit TetrisModelV1(torch::Tensor const & params) : TetrisModelV1(params, torch::kFloat32) {}
-    explicit TetrisModelV1(torch::Dtype);
+    explicit TetrisModelV1(uint64_t seed, torch::Dtype);
     explicit TetrisModelV1(torch::Tensor const &, torch::Dtype);
 
     torch::Tensor evaluate(torch::Tensor const &);

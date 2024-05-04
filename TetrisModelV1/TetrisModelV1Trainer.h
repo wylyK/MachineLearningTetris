@@ -12,6 +12,7 @@ class TetrisModelV1Trainer {
     static constexpr float GENETIC_STDDEV = .5;
   private:
     std::mt19937_64 random;
+    torch::Generator torchGen;
     vector<TetrisModelV1 *> models;
     SimplifiedTetris::Game game;
     size_t population;

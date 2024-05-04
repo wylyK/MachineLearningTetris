@@ -7,7 +7,8 @@
 TetrisModelV1Trainer::TetrisModelV1Trainer(size_t population, seed_type seed) :
     population(population),
     random(seed),
-    game(random())
+    game(random()),
+    torchGen(at::detail::createCPUGenerator(random()))
 {
     for (size_t i = 0; i < population; ++i) {
         // TODO: implement destructor
@@ -62,8 +63,6 @@ void TetrisModelV1Trainer::trainRound() {
     std::uniform_int_distribution<size_t> randomSampler(0, k);
     for (int i = k; i < population; ++i) {
         torch::Tensor const & sourceParams = models[randomSampler(random)]->params;
-        // models[i]->setParams(torch::normal(sourceParams, torch::full(TetrisModelV1::NUM_PARAMETERS, GENETIC_STDDEV),
-        //                                    TetrisModelV1::NUM_PARAMETERS));
-        models[i]->setParams(at::normal(sourceParams, TetrisModelV1::NUM_PARAMETERS));
+        models[i]->setParams(at::normal(sourceParams, TetrisModelV1::NUM_PARAMETERS, torchGen));
     }
 }

@@ -94,21 +94,6 @@ namespace feats {
       };
   }
 
-  vector<int> columnHeights(SimplifiedTetris::Board const & b) {
-      vector<int> heights(SimplifiedTetris::Board::WIDTH);
-      for (int i = 0; i < SimplifiedTetris::Board::WIDTH; i++) {
-          heights[i] = 0;
-          for (int j = SimplifiedTetris::Board::HEIGHT - 1; j > -1; j--) {
-              if (b.board[j][i] != SimplifiedTetris::null) {
-                  heights[i] = j + 1;
-                  break;
-              }
-
-          }
-      }
-      return heights;
-  }
-
   // analysis is done per column
   VerticalFeatures getVerticalFeatures(SimplifiedTetris::Board const & board) {
       int numColTrans = 0;
@@ -132,7 +117,7 @@ namespace feats {
       }
       for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
           heights[col] = 0;
-          for (int y = SimplifiedTetris::Board::HEIGHT - 1; y >= 0; ++y) {
+          for (int y = SimplifiedTetris::Board::HEIGHT - 1; y >= 0; --y) {
               if (board.board[y][col] != SimplifiedTetris::null) {
                   heights[col] = y + 1;
                   break;

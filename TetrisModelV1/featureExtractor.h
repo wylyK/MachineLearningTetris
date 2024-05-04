@@ -27,7 +27,6 @@ namespace feats {
   HorizontalFeatures getHorizontalFeatures(SimplifiedTetris::Board const &);
   VerticalFeatures getVerticalFeatures(SimplifiedTetris::Board const &);
 
-  vector<int> columnHeights(SimplifiedTetris::Board const &);
   int maxHeight(vector<int> const & heights);
   int rowsCleared(SimplifiedTetris::Board const &);
   // int holeDepth(SimplifiedTetris::Board const &);

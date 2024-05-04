@@ -223,7 +223,7 @@ namespace SimplifiedTetris {
       Board const & getBoard() const { return board; };
       void printBoard() const;
       std::vector<Move> getPlacements();
-      std::tuple<Board *,int> previewMove(Move const &);
+      std::tuple<Board *, int> previewMove(Move const &) const;
       int doMove(Move const &);
   };
 }

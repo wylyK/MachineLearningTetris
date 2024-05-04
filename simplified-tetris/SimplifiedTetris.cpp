@@ -213,6 +213,7 @@ namespace SimplifiedTetris {
 
   void Game::doMove(Move const & move) {
       placePieceOnBoard(board, move);
+      clearRowsOnBoard(board);
       fallingPiece = getNext();
   }
 

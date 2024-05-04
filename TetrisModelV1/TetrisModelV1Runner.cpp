@@ -28,8 +28,9 @@ int playGame(TetrisModelV1 & model, SimplifiedTetris::Game & game) {
                                                  TetrisModelV1::INPUT_FEATURES});
         auto modelInputAccessor = modelInput.accessor<float, 2>();
         for (int n = 0; n < placements.size(); ++n) {
-            auto const newBoard = game.previewMove(placements[n]);
-            int64_t modelInputIdx = 0;
+            auto const boardState = game.previewMove(placements[n]);
+            auto const newBoard = get<0>(boardState);
+            (boardState)int64_t modelInputIdx = 0;
 
             vector<int> const colHeights = feats::columnHeights(*newBoard);
             for (int const & colHeight : colHeights) {

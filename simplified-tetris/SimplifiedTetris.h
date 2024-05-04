@@ -222,7 +222,7 @@ namespace SimplifiedTetris {
       Board const & getBoard() const { return board; };
       void printBoard() const;
       std::vector<Move> getPlacements();
-      std::vector<int> clearedRows();
+      std::vector<int> clearedRows() const;
       void clearFull();
       Board * previewMove(Move const &);
       void doMove(Move const &);

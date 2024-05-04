@@ -138,7 +138,7 @@ namespace SimplifiedTetris {
       return validPlacements;
   }
 
-  std::vector<int> Game::clearedRows() {
+  std::vector<int> Game::clearedRows() const {
       std::vector<int> rows;
       for (int j = 0; j < Board::HEIGHT; j++) {
           bool cleared = true;

@@ -15,26 +15,6 @@ namespace feats {
  //     return cleared;
  // }
 
-  int getNumWells(SimplifiedTetris::Board const & board) {
-      bool filled[SimplifiedTetris::Board::WIDTH] = {};
-      int wells = 0;
-      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
-          for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
-              if (board.board[row][col] == SimplifiedTetris::Tetromino::null) {
-                  if (!filled[col]
-                      && (col == 0 || board.board[row][col - 1] != SimplifiedTetris::Tetromino::null)
-                      && (col == SimplifiedTetris::Board::WIDTH - 1
-                          || board.board[row][col + 1] != SimplifiedTetris::Tetromino::null)) {
-                      ++wells;
-                  }
-              } else {
-                  filled[col] = true;
-              }
-          }
-      }
-      return wells;
-  }
-
   // int rowsCleared(SimplifiedTetris::Game const & g) {
   //     return g.clearedRows().size();
   // }
@@ -45,6 +25,7 @@ namespace feats {
       int numUnused = 0;
       bool filled[SimplifiedTetris::Board::WIDTH] = {};
       int holes = 0;
+      int wells = 0;
       for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
           bool prevEmpty = board.board[row][0] == SimplifiedTetris::Tetromino::null;
           for (int x = 0; x < SimplifiedTetris::Board::WIDTH; ++x) {
@@ -53,6 +34,10 @@ namespace feats {
                   ++numUnused;
                   if (filled[x]) {
                       ++holes;
+                  } else if ((x == 0 || board.board[row][x - 1] != SimplifiedTetris::Tetromino::null)
+                             && (x == SimplifiedTetris::Board::WIDTH - 1
+                                 || board.board[row][x + 1] != SimplifiedTetris::Tetromino::null)) {
+                      ++wells;
                   }
               } else {
                   filled[x] = true;
@@ -66,7 +51,8 @@ namespace feats {
       return {
           .numRowTrans=numRowTrans,
           .numUnused=numUnused,
-          .numHoles=holes
+          .numHoles=holes,
+          .numWells=wells
       };
   }
 

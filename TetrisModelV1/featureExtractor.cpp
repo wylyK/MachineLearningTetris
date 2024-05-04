@@ -32,13 +32,15 @@ namespace feats {
       bool filled[SimplifiedTetris::Board::WIDTH] = {};
       for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
           bool prevEmpty = board.board[row][0] == SimplifiedTetris::Tetromino::null;
+          SimplifiedTetris::Tetromino prev;
           for (int x = 0; x < SimplifiedTetris::Board::WIDTH; ++x) {
-              bool const curEmpty = board.board[row][x] == SimplifiedTetris::Tetromino::null;
+              SimplifiedTetris::Tetromino const cur = board.board[row][x];
+              bool const curEmpty = cur == SimplifiedTetris::Tetromino::null;
               if (curEmpty) {
                   ++outFeats.numUnused;
                   if (filled[x]) {
                       ++outFeats.numHoles;
-                  } else if ((x == 0 || board.board[row][x - 1] != SimplifiedTetris::Tetromino::null)
+                  } else if ((x == 0 || prev != SimplifiedTetris::Tetromino::null)
                              && (x == SimplifiedTetris::Board::WIDTH - 1
                                  || board.board[row][x + 1] != SimplifiedTetris::Tetromino::null)) {
                       ++outFeats.numWells;
@@ -52,9 +54,10 @@ namespace feats {
                   }
               }
               if (curEmpty != prevEmpty) {
-                  outFeats.numRowTrans++;
+                  ++outFeats.numRowTrans;
               }
               prevEmpty = curEmpty;
+              prev = cur;
           }
       }
       return outFeats;

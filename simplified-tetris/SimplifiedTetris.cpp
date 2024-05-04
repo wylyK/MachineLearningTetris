@@ -81,39 +81,28 @@ namespace SimplifiedTetris {
                   bool onFloor = false;
                   bool overlap = false;
                   for (auto const & blockCoord : PIECE_IDXS[fallingPiece][f]) {
-                  // for (int subX = 0; subX < PIECE_SIZE[fallingPiece]; ++subX) {
-                  //     for (int subY = 0; subY < PIECE_SIZE[fallingPiece]; ++subY) {
-                  //         if (FACINGS[fallingPiece][f][subY][subX] == Tetromino::null) {
-                  //             // this block in the tetromino is empty, so we don't need to check it
-                  //             continue;
-                  //         }
+                      // x axis for board: left=0
+                      // x axis for piece: left=0
+                      int const x = pieceX + blockCoord[1];
+                      // y axis for board: bottom=0
+                      // y axis for piece: top=0
+                      int const y = pieceY - blockCoord[0];
 
-                          // x axis for board: left=0
-                          // x axis for piece: left=0
-                          int const x = pieceX + blockCoord[1];
-                          // y axis for board: bottom=0
-                          // y axis for piece: top=0
-                          int const y = pieceY - blockCoord[0];
-
-                          if (x < 0 || x >= 10 || y < 0 || y >= Board::HEIGHT) {
-                              // piece is out of bounds
-                              locationValid = false;
-                              break;
-                          }
-                          if (board.board[y][x] != Tetromino::null) {
-                              // piece overlaps with a piece already on the board
-                              overlap = true;
-                              locationValid = false;
-                              break;
-                          }
-                          if (y == 0 || board.board[y - 1][x] != Tetromino::null) {
-                              onFloor = true;
-                          }
-                      // }
-                      // if (!locationValid) {
-                      //     break;
-                      // } // end for subY
-                  } // end for subX
+                      if (x < 0 || x >= 10 || y < 0 || y >= Board::HEIGHT) {
+                          // piece is out of bounds
+                          locationValid = false;
+                          break;
+                      }
+                      if (board.board[y][x] != Tetromino::null) {
+                          // piece overlaps with a piece already on the board
+                          overlap = true;
+                          locationValid = false;
+                          break;
+                      }
+                      if (y == 0 || board.board[y - 1][x] != Tetromino::null) {
+                          onFloor = true;
+                      }
+                  }
                   if (onFloor) {
                       if (locationValid) {
                           placementsList.push_back({fallingPiece, f, pieceX, pieceY});

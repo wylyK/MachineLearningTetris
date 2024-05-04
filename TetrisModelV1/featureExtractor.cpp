@@ -125,37 +125,23 @@ namespace feats {
       };
   }
 
+  // analysis is done per column
   VerticalFeatures getVerticalFeatures(SimplifiedTetris::Board const & board) {
       int numColTrans = 0;
       for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
-          bool is_prev_used = board.board[SimplifiedTetris::Board::HEIGHT - 1][col] != SimplifiedTetris::Tetromino::null;
-          for (int row = SimplifiedTetris::Board::HEIGHT - 2; row >= 0; --row) {
-              bool const is_curr_used = board.board[row][col] != SimplifiedTetris::Tetromino::null;
-              if (is_prev_used != is_curr_used) {
+          bool prevEmpty = board.board[0][col] == SimplifiedTetris::Tetromino::null;
+          for (int y = 0; y < SimplifiedTetris::Board::HEIGHT; ++y) {
+              bool const curEmpty = board.board[y][col] == SimplifiedTetris::Tetromino::null;
+              if (prevEmpty != curEmpty) {
                   ++numColTrans;
               }
-              is_prev_used = is_curr_used;
+              prevEmpty = curEmpty;
           }
       }
       return {
           .numColTrans=numColTrans
       };
   }
-
-  // //analysis is done per row
-  // std::tuple<int, int> horizontalFeatures(SimplifiedTetris::Board const & board) {
-  //     int numRowTrans = 0;
-  //     for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
-  //         bool is_prev_used = board.board[row][0] != SimplifiedTetris::Tetromino::null;
-  //         for (int col = 1; col < SimplifiedTetris::Board::WIDTH; ++col) {
-  //             bool is_curr_used = board.board[row][col] != SimplifiedTetris::Tetromino::null;
-  //             if (is_prev_used != is_curr_used) {
-  //                 numRowTrans++;
-  //             }
-  //             is_prev_used = is_curr_used;
-  //         }
-  //     }
-  // }
 
   // //analysis is done per column
   // //iterate over columns: columnHeights, numHoles, row transitions

@@ -131,18 +131,18 @@ namespace feats {
 
   int maxHeight(vector<int> const & heights) {
       int max = 0;
-      for (int const height: heights) {
+      for (int const height : heights) {
           max = std::max(max, height);
       }
       return max;
   }
 
   //analysis is done per row
-  std::tuple<int, int> horizontalFeatures(SimplifiedTetris::Board const & board){
+  std::tuple<int, int> horizontalFeatures(SimplifiedTetris::Board const & board) {
     int numRowTrans = 0;
-      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row){
+      for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
           bool is_prev_used = board.board[row][0] != SimplifiedTetris::Tetromino::null;
-          for (int col = 1; col < SimplifiedTetris::Board::WIDTH; ++col){
+          for (int col = 1; col < SimplifiedTetris::Board::WIDTH; ++col) {
               bool is_curr_used = board.board[row][col] != SimplifiedTetris::Tetromino::null;
               if (is_prev_used != is_curr_used) {
                   numRowTrans++;
@@ -150,18 +150,18 @@ namespace feats {
               is_prev_used = is_curr_used;
           }
       }
-
   }
+
   //analysis is done per column
-  std::tuple<vector<int>,int,int> verticalFeatures(SimplifiedTetris::Board const & board){
+  std::tuple<vector<int>,int,int> verticalFeatures(SimplifiedTetris::Board const & board) {
       int numOverHoles = 0;
       vector<int> heights(10);
       int numColTrans = 0;
 
-      for (int row = 0; row < SimplifiedTetris::Board::WIDTH; row++){
+      for (int row = 0; row < SimplifiedTetris::Board::WIDTH; row++) {
           bool reachedHole = false;
           bool is_prev_used = board.board[row][0] != SimplifiedTetris::Tetromino::null;
-          for (int col = SimplifiedTetris::Board::HEIGHT - 1;col > -1; col--){
+          for (int col = SimplifiedTetris::Board::HEIGHT - 1; col > -1; col--) {
               if (board.board[row][col] == SimplifiedTetris::Tetromino::null) {
                   reachedHole = true;
               }
@@ -171,9 +171,8 @@ namespace feats {
 
           }
       }
-
-
   }
+
   std::pair<int, int> getNumTrans(SimplifiedTetris::Board const & board) {
       std::pair<int, int> numTrans;
 

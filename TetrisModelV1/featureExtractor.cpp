@@ -26,6 +26,8 @@ namespace feats {
       bool filled[SimplifiedTetris::Board::WIDTH] = {};
       int holes = 0;
       int wells = 0;
+      vector<int> heights(SimplifiedTetris::Board::WIDTH);
+      int maxColHeight = 0;
       for (int row = SimplifiedTetris::Board::HEIGHT - 1; row >= 0; --row) {
           bool prevEmpty = board.board[row][0] == SimplifiedTetris::Tetromino::null;
           for (int x = 0; x < SimplifiedTetris::Board::WIDTH; ++x) {
@@ -39,8 +41,13 @@ namespace feats {
                                  || board.board[row][x + 1] != SimplifiedTetris::Tetromino::null)) {
                       ++wells;
                   }
-              } else {
+              } else if (!filled[x]) {
                   filled[x] = true;
+                  int const height = row + 1;
+                  heights[x] = height;
+                  if (height > maxColHeight) {
+                      maxColHeight = height;
+                  }
               }
               if (curEmpty != prevEmpty) {
                   numRowTrans++;
@@ -49,10 +56,12 @@ namespace feats {
           }
       }
       return {
-          .numRowTrans=numRowTrans,
+          .colHeights=heights, // TODO: avoid copy
+          .maxColHeight=maxColHeight,
           .numUnused=numUnused,
           .numHoles=holes,
-          .numWells=wells
+          .numWells=wells,
+          .numRowTrans=numRowTrans
       };
   }
 
@@ -78,24 +87,24 @@ namespace feats {
               prevEmpty = curEmpty;
           }
       }
-      for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
-          heights[col] = 0;
-          for (int y = SimplifiedTetris::Board::HEIGHT - 1; y >= 0; --y) {
-              if (board.board[y][col] != SimplifiedTetris::null) {
-                  int const height = y + 1;
-                  heights[col] = height;
-                  if (height > maxColHeight) {
-                      maxColHeight = height;
-                  }
-                  break;
-              }
-          }
-      }
+      // for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
+      //     heights[col] = 0;
+      //     for (int y = SimplifiedTetris::Board::HEIGHT - 1; y >= 0; --y) {
+      //         if (board.board[y][col] != SimplifiedTetris::null) {
+      //             int const height = y + 1;
+      //             heights[col] = height;
+      //             if (height > maxColHeight) {
+      //                 maxColHeight = height;
+      //             }
+      //             break;
+      //         }
+      //     }
+      // }
       return {
-          .colHeights=heights, // TODO: avoid copy
+          // .colHeights=heights, // TODO: avoid copy
           .numOverHoles=numOverHoles,
           .numColTrans=numColTrans,
-          .maxColHeight=maxColHeight
+          // .maxColHeight=maxColHeight
       };
   }
 

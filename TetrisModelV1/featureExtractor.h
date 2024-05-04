@@ -10,7 +10,7 @@ namespace feats {
   // analysis is done per column
   struct VerticalFeatures {
       // vector<int> heights;
-      // int numOverHoles;
+      int numOverHoles;
       int numColTrans;
       // int maxHeight;
   };
@@ -34,10 +34,8 @@ namespace feats {
   int getNumHoles(SimplifiedTetris::Board const &);
   int getNumWells(SimplifiedTetris::Board const &);
   int getNumUnused(SimplifiedTetris::Board const &);
-  int getNumOverHoles(SimplifiedTetris::Board const &);
-  int getNumRowTrans(SimplifiedTetris::Board const &);
-  int getNumColTrans(SimplifiedTetris::Board const &);
-  std::pair<int, int>getNumTrans(SimplifiedTetris::Board const &);
+  // int getNumOverHoles(SimplifiedTetris::Board const &);
+  // std::pair<int, int>getNumTrans(SimplifiedTetris::Board const &);
   std::tuple<int, int> horizontalFeatures(SimplifiedTetris::Board const & board);
   std::tuple<vector<int>, int, int> verticalFeatures(SimplifiedTetris::Board const & board);
 }

@@ -78,22 +78,6 @@ namespace feats {
       }
       return numUnused;
   }
-  
-  int getNumOverHoles(SimplifiedTetris::Board const & board) {
-      int numOverHoles = 0;
-      for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
-          bool reachedHole = false;
-          for (int row = 0; row < SimplifiedTetris::Board::HEIGHT; ++row) {
-              if (board.board[row][col] == SimplifiedTetris::Tetromino::null) {
-                  reachedHole = true;
-              }
-              if(board.board[row][col] != SimplifiedTetris::Tetromino::null && reachedHole) {
-                  numOverHoles++;
-              }
-          }
-      }
-      return numOverHoles;
-  }
 
   // int rowsCleared(SimplifiedTetris::Game const & g) {
   //     return g.clearedRows().size();
@@ -128,10 +112,17 @@ namespace feats {
   // analysis is done per column
   VerticalFeatures getVerticalFeatures(SimplifiedTetris::Board const & board) {
       int numColTrans = 0;
+      int numOverHoles = 0;
       for (int col = 0; col < SimplifiedTetris::Board::WIDTH; ++col) {
+          bool reachedHole = false;
           bool prevEmpty = board.board[0][col] == SimplifiedTetris::Tetromino::null;
           for (int y = 0; y < SimplifiedTetris::Board::HEIGHT; ++y) {
               bool const curEmpty = board.board[y][col] == SimplifiedTetris::Tetromino::null;
+              if (curEmpty) {
+                  reachedHole = true;
+              } else if (reachedHole) {
+                  ++numOverHoles;
+              }
               if (prevEmpty != curEmpty) {
                   ++numColTrans;
               }
@@ -139,6 +130,7 @@ namespace feats {
           }
       }
       return {
+          .numOverHoles=numOverHoles,
           .numColTrans=numColTrans
       };
   }
@@ -165,39 +157,39 @@ namespace feats {
   //     }
   // }
 
-  std::pair<int, int> getNumTrans(SimplifiedTetris::Board const & board) {
-      std::pair<int, int> numTrans;
-
-      // row and col transitions respectively
-      numTrans.first = 0;
-      numTrans.second = 0;
-      int const HEIGHT = SimplifiedTetris::Board::HEIGHT;
-      int const WIDTH = SimplifiedTetris::Board::WIDTH;
-      for (int row = HEIGHT - 1; row >= 0; --row) {
-          for (int col = 0; col < WIDTH; ++col) {
-
-              if (row < HEIGHT - 1) {
-                  bool is_prev_row_filled = board.board[row + 1][col] != SimplifiedTetris::Tetromino::null;
-                  bool is_curr_row_filled = board.board[row][col] != SimplifiedTetris::Tetromino::null;
-
-                  // check if row transition
-                  if (is_prev_row_filled != is_curr_row_filled) {
-                      numTrans.first++;
-                  }
-              }
-
-              if (col != 0) {
-                  bool is_prev_col_filled = board.board[row][col - 1] != SimplifiedTetris::Tetromino::null;
-                  bool is_curr_col_filled = board.board[row][col] != SimplifiedTetris::Tetromino::null;
-
-                  // check if col transition
-                  if (is_prev_col_filled != is_curr_col_filled) {
-                      numTrans.second++;
-                  }
-              }
-          }
-      }
-      return numTrans;
-  }
+  // std::pair<int, int> getNumTrans(SimplifiedTetris::Board const & board) {
+  //     std::pair<int, int> numTrans;
+  //
+  //     // row and col transitions respectively
+  //     numTrans.first = 0;
+  //     numTrans.second = 0;
+  //     int const HEIGHT = SimplifiedTetris::Board::HEIGHT;
+  //     int const WIDTH = SimplifiedTetris::Board::WIDTH;
+  //     for (int row = HEIGHT - 1; row >= 0; --row) {
+  //         for (int col = 0; col < WIDTH; ++col) {
+  //
+  //             if (row < HEIGHT - 1) {
+  //                 bool is_prev_row_filled = board.board[row + 1][col] != SimplifiedTetris::Tetromino::null;
+  //                 bool is_curr_row_filled = board.board[row][col] != SimplifiedTetris::Tetromino::null;
+  //
+  //                 // check if row transition
+  //                 if (is_prev_row_filled != is_curr_row_filled) {
+  //                     numTrans.first++;
+  //                 }
+  //             }
+  //
+  //             if (col != 0) {
+  //                 bool is_prev_col_filled = board.board[row][col - 1] != SimplifiedTetris::Tetromino::null;
+  //                 bool is_curr_col_filled = board.board[row][col] != SimplifiedTetris::Tetromino::null;
+  //
+  //                 // check if col transition
+  //                 if (is_prev_col_filled != is_curr_col_filled) {
+  //                     numTrans.second++;
+  //                 }
+  //             }
+  //         }
+  //     }
+  //     return numTrans;
+  // }
 
 }

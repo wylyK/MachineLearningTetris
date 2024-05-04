@@ -48,8 +48,8 @@ std::tuple<int, int> playGame(TetrisModelV1 & model, SimplifiedTetris::Game & ga
             modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumColTrans(*newBoard));
             ++modelInputIdx;
 
-            // modelInputAccessor[n][modelInputIdx] = static_cast<float>(rowsCleared);
-            // ++modelInputIdx
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(rowsCleared);
+            ++modelInputIdx;
 
             if (modelInputIdx != TetrisModelV1::INPUT_FEATURES) {
                 std::cerr << "defined number of inputs to TetrisModelV1 does not match amount passed in TetrisModelV1Runner" << std::endl;

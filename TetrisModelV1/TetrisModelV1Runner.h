@@ -5,6 +5,6 @@
 #include "TetrisModelV1.h"
 #include "../simplified-tetris/SimplifiedTetris.h"
 
-int playGame(TetrisModelV1 &, SimplifiedTetris::Game &);
+std::tuple<int, int> playGame(TetrisModelV1 &, SimplifiedTetris::Game &);
 
 #endif //SIMPLIFIED_TETRIS_TETRISMODELV1RUNNER_H

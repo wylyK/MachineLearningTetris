@@ -6,8 +6,10 @@ using std::vector;
 std::tuple<int, int> playGame(TetrisModelV1 & model, SimplifiedTetris::Game & game) {
     int numMoves = 0;
     int totalRowsCleared = 0;
+    SimplifiedTetris::Board tmpBoard;
     while (true) {
-        auto const placements = game.getPlacements();
+        vector<SimplifiedTetris::Move> placements;
+        game.getPlacements(placements);
         if (placements.empty()) {
             // std::cout << "Out of moves. Lasted " << numMoves << " moves." << std::endl;
             return {numMoves, totalRowsCleared};
@@ -17,36 +19,40 @@ std::tuple<int, int> playGame(TetrisModelV1 & model, SimplifiedTetris::Game & ga
                                                  TetrisModelV1::INPUT_FEATURES});
         auto modelInputAccessor = modelInput.accessor<float, 2>();
         for (int n = 0; n < placements.size(); ++n) {
-            auto const preview_result = game.previewMove(placements[n]);
-            auto const newBoard = std::get<0>(preview_result);
-            auto const rowsCleared = std::get<1>(preview_result);
+            int const rowsCleared = game.previewMove(placements[n], tmpBoard);
             int64_t modelInputIdx = 0;
 
-            vector<int> const colHeights = feats::columnHeights(*newBoard);
-            for (int const & colHeight : colHeights) {
-                modelInputAccessor[n][modelInputIdx] = static_cast<float>(colHeight);
+            feats::HorizontalFeatures const horizontalFeatures = feats::getHorizontalFeatures(tmpBoard);
+            feats::VerticalFeatures const verticalFeatures = feats::getVerticalFeatures(tmpBoard);
 
+            for (int const & colHeight : horizontalFeatures.colHeights) {
+                modelInputAccessor[n][modelInputIdx] = static_cast<float>(colHeight);
                 ++modelInputIdx;
             }
 
             // divide by board size to normalize between 0 and 1
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumUnused(*newBoard)) / SimplifiedTetris::Board::NUM_CELLS;
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numUnused) / SimplifiedTetris::Board::NUM_CELLS;
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumHoles(*newBoard));
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numHoles);
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumWells(*newBoard));
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numWells);
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumOverHoles(*newBoard));
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(verticalFeatures.numOverHoles);
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumRowTrans(*newBoard));
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(verticalFeatures.numColTrans);
             ++modelInputIdx;
 
-            modelInputAccessor[n][modelInputIdx] = static_cast<float>(feats::getNumColTrans(*newBoard));
+            modelInputAccessor[n][modelInputIdx] = static_cast<float>(horizontalFeatures.numRowTrans);
             ++modelInputIdx;
+
+            // std::cout << std::endl;
+            // tmpBoard.print();
+            // std::cout << "num col trans: " << verticalFeatures.numColTrans << std::endl;
+            // std::cout << "num row trans: " << horizontalFeatures.numRowTrans << std::endl;
 
             modelInputAccessor[n][modelInputIdx] = static_cast<float>(rowsCleared);
             ++modelInputIdx;
@@ -55,8 +61,6 @@ std::tuple<int, int> playGame(TetrisModelV1 & model, SimplifiedTetris::Game & ga
                 std::cerr << "defined number of inputs to TetrisModelV1 does not match amount passed in TetrisModelV1Runner" << std::endl;
                 abort();
             }
-
-            delete newBoard;
         }
         auto const scores = model.evaluate(modelInput);
         // std::cout << "scores = " << scores << std::endl;

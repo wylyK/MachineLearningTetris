@@ -28,15 +28,15 @@ torch::Tensor TetrisModelV1::Net::forward(torch::Tensor x) {
     return x;
 }
 
-TetrisModelV1::TetrisModelV1(torch::Dtype dtype) :
+TetrisModelV1::TetrisModelV1(uint64_t const seed, torch::Dtype const dtype) :
     dtype(dtype),
     net(dtype)
 {
     // mean 0, stddev .5
-    setParams(torch::normal(0, .5, TetrisModelV1::NUM_PARAMETERS));
+    setParams(torch::normal(0, .5, TetrisModelV1::NUM_PARAMETERS, at::detail::createCPUGenerator(seed)));
 }
 
-TetrisModelV1::TetrisModelV1(torch::Tensor const & params, torch::Dtype dtype) :
+TetrisModelV1::TetrisModelV1(torch::Tensor const & params, torch::Dtype const dtype) :
     dtype(dtype),
     net(dtype)
 {

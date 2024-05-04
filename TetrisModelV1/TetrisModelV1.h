@@ -6,7 +6,7 @@ class TetrisModelV1 {
   public:
     // TODO: change this back to 19 once the last 3 features are added
     // static size_t constexpr INPUT_FEATURES = 19;
-    static size_t constexpr INPUT_FEATURES = 16;
+    static size_t constexpr INPUT_FEATURES = 17;
     static size_t constexpr MIDDLE_LAYER_1_SIZE = 10;
     static size_t constexpr MIDDLE_LAYER_2_SIZE = 10;
 
@@ -33,9 +33,9 @@ class TetrisModelV1 {
   private:
     Net net;
   public:
-    TetrisModelV1() : TetrisModelV1(torch::kFloat32) {}
+    explicit TetrisModelV1(uint64_t seed) : TetrisModelV1(seed, torch::kFloat32) {}
     explicit TetrisModelV1(torch::Tensor const & params) : TetrisModelV1(params, torch::kFloat32) {}
-    explicit TetrisModelV1(torch::Dtype);
+    explicit TetrisModelV1(uint64_t seed, torch::Dtype);
     explicit TetrisModelV1(torch::Tensor const &, torch::Dtype);
 
     torch::Tensor evaluate(torch::Tensor const &);

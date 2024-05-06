@@ -11,6 +11,12 @@ add_executable(TetrisModelV1 TetrisModelV1/main.cpp TetrisModelV1/TetrisModelV1.
         simplified-tetris/SimplifiedTetris.cpp TetrisModelV1/TetrisModelV1Runner.cpp
         TetrisModelV1/TetrisModelV1Trainer.cpp)
 target_link_libraries(TetrisModelV1 "${TORCH_LIBRARIES}")
+
+add_executable(TetrisModelV2 TetrisModelV2/main.cpp TetrisModelV2/TetrisModelV2.cpp TetrisModelV2/featureExtractor.cpp
+        simplified-tetris/SimplifiedTetris.cpp TetrisModelV2/TetrisModelV2Runner.cpp
+        TetrisModelV2/TetrisModelV2Trainer.cpp)
+target_link_libraries(TetrisModelV2 "${TORCH_LIBRARIES}")
+
 if (MSVC)
     file(GLOB TORCH_DLLS "${TORCH_INSTALL_PREFIX}/lib/*.dll")
     add_custom_command(TARGET example-app

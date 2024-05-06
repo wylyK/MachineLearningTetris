@@ -1,7 +1,7 @@
 #include <chrono>
 #include <iostream>
 
-#include "TetrisModelV1Trainer.h"
+#include "TetrisModelV2Trainer.h"
 
 using namespace torch::indexing;
 

@@ -10,6 +10,8 @@ using std::vector;
 class TetrisModelV1Trainer {
   public:
     static constexpr float GENETIC_STDDEV = .5;
+    static constexpr int K_SAVED = 20;
+    static constexpr int GAMES_PER_ROUND = 2;
   private:
     std::mt19937_64 random;
     torch::Generator torchGen;
@@ -19,7 +21,7 @@ class TetrisModelV1Trainer {
   public:
     typedef std::mt19937_64::result_type seed_type;
     explicit TetrisModelV1Trainer(size_t population, seed_type seed);
-    vector<std::tuple<int, int>> runPopulation();
+    void runPopulation(torch::Tensor &);
     void trainRound();
 };
 

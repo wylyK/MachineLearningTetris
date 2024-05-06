@@ -16,52 +16,59 @@ TetrisModelV1Trainer::TetrisModelV1Trainer(size_t population, seed_type seed) :
     }
 }
 
-vector<std::tuple<int, int>> TetrisModelV1Trainer::runPopulation() {
-    vector<std::tuple<int, int>> results;
+void TetrisModelV1Trainer::runPopulation(torch::Tensor & resultsOut) {
+    auto resultsAccessor = resultsOut.accessor<int, 2>();
+    // vector<std::tuple<int, int>> results;
     for (int i = 0; i < population; ++i) {
 
         // TODO: make this more efficient
         game = SimplifiedTetris::Game(random());
 
-        results.push_back(playGame(*models[i], game));
+        auto const gameResults = playGame(*models[i], game);
+
+        resultsAccessor[i][0] += static_cast<float>(std::get<0>(gameResults));
+        resultsAccessor[i][1] += static_cast<float>(std::get<1>(gameResults));
     }
-    return results;
 }
 
 void TetrisModelV1Trainer::trainRound() {
-    auto results = runPopulation();
+    torch::Tensor results = torch::zeros({static_cast<int64_t>(population), 2}, torch::kInt32);
+    for (int gameIdx = 0; gameIdx < GAMES_PER_ROUND; ++gameIdx) {
+        runPopulation(results);
+    }
+    auto resultsAccessor = results.accessor<int, 2>();
     // std::cout << "Results: " << results << std::endl;
 
     // create array if indexes 0..population
     int idxs[population];
     std::iota(&idxs[0], &idxs[population], 0);
 
-    static int const k = 20;
-
     // sort largest to smallest
-    std::partial_sort(&idxs[0], &idxs[k], &idxs[population], [&results](int const & i, int const & j) {
-        return std::get<0>(results[i]) > std::get<0>(results[j]);
+    std::partial_sort(&idxs[0], &idxs[K_SAVED], &idxs[population], [&resultsAccessor](int const & i, int const & j) {
+        return resultsAccessor[i][0]> resultsAccessor[j][0];
     });
 
     // move the 20 best performing models to the start front of the array
-    for (int i = 0; i < k; ++i) {
+    for (int i = 0; i < K_SAVED; ++i) {
         std::swap(models[i], models[idxs[i]]);
     }
 
     int topKSumPieces = 0;
     int topKSumRows = 0;
     // std::cout << "Top " << k << " results: ";
-    for (int i = 0; i < k; ++i) {
+    for (int i = 0; i < K_SAVED; ++i) {
         // std::cout << results[idxs[i]] << ", ";
-        topKSumPieces += std::get<0>(results[idxs[i]]);
-        topKSumRows += std::get<1>(results[idxs[i]]);
+        topKSumPieces += resultsAccessor[idxs[i]][0];
+        topKSumRows += resultsAccessor[idxs[i]][1];
     }
     // std::cout << std::endl;
-    std::cout << "Mean pieces of top " << k << ": " << static_cast<float>(topKSumPieces) / k << std::endl;
-    std::cout << "Mean rows of top " << k << ": " << static_cast<float>(topKSumRows) / k << std::endl;
+    std::cout << "Mean pieces of top " << K_SAVED << ": "
+              << static_cast<float>(topKSumPieces) / (K_SAVED * GAMES_PER_ROUND) << std::endl;
+    std::cout << "Mean rows of top " << K_SAVED << ": "
+              << static_cast<float>(topKSumRows) / (K_SAVED * GAMES_PER_ROUND) << std::endl;
 
-    std::uniform_int_distribution<size_t> randomSampler(0, k);
-    for (int i = k; i < population; ++i) {
+    std::uniform_int_distribution<size_t> randomSampler(0, K_SAVED);
+    for (int i = K_SAVED; i < population; ++i) {
         torch::Tensor const & sourceParams = models[randomSampler(random)]->params;
         models[i]->setParams(at::normal(sourceParams, TetrisModelV1::NUM_PARAMETERS, torchGen));
     }

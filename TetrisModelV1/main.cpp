@@ -9,7 +9,7 @@ int main() {
     TetrisModelV1Trainer trainer(100, 5);
 
     std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-    for (int generation = 0; generation < 100; ++generation) {
+    for (int generation = 0; generation < 1000; ++generation) {
         std::cout << "Generation " << generation << std::endl;
         trainer.trainRound();
         std::cout << std::endl;
@@ -17,12 +17,12 @@ int main() {
     std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
     std::cout << "Time taken = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << " ms" << std::endl;
 
-    auto results = trainer.runPopulation();
-    std::cout << "Results: ";
-    for (auto const & result : results) {
-        std::cout << std::get<0>(result) << " ";
-    }
-    std::cout << std::endl;
+    // auto results = trainer.runPopulation();
+    // std::cout << "Results: ";
+    // for (auto const & result : results) {
+    //     std::cout << std::get<0>(result) << " ";
+    // }
+    // std::cout << std::endl;
 
 //    SimplifiedTetris::Game game(4);
 //    std::vector<SimplifiedTetris::Move> placements = game.getPlacements();

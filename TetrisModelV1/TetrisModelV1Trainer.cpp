@@ -53,6 +53,12 @@ void TetrisModelV1Trainer::trainRound() {
         std::swap(models[i], models[idxs[i]]);
     }
 
+    int allSumPieces = 0;
+    int allSumRows = 0;
+    for (int i = 0; i < population; ++i) {
+        allSumPieces += resultsAccessor[i][0];
+        allSumRows += resultsAccessor[i][1];
+    }
     int topKSumPieces = 0;
     int topKSumRows = 0;
     // std::cout << "Top " << k << " results: ";
@@ -62,15 +68,23 @@ void TetrisModelV1Trainer::trainRound() {
         topKSumRows += resultsAccessor[idxs[i]][1];
     }
     // std::cout << std::endl;
+    std::cout << "Mean pieces of top 1: "
+              << static_cast<float>(resultsAccessor[idxs[0]][0]) / GAMES_PER_ROUND << std::endl;
+    std::cout << "Mean rows of top 1: "
+              << static_cast<float>(resultsAccessor[idxs[0]][1]) / GAMES_PER_ROUND << std::endl;
     std::cout << "Mean pieces of top " << K_SAVED << ": "
               << static_cast<float>(topKSumPieces) / (K_SAVED * GAMES_PER_ROUND) << std::endl;
     std::cout << "Mean rows of top " << K_SAVED << ": "
               << static_cast<float>(topKSumRows) / (K_SAVED * GAMES_PER_ROUND) << std::endl;
+    std::cout << "Mean pieces of all: "
+              << static_cast<float>(allSumPieces) / (population * GAMES_PER_ROUND) << std::endl;
+    std::cout << "Mean rows of top all: "
+              << static_cast<float>(allSumRows) / (population * GAMES_PER_ROUND) << std::endl;
 
     std::uniform_int_distribution<size_t> randomSampler(0, K_SAVED);
     for (int i = K_SAVED; i < population; ++i) {
         torch::Tensor const & sourceParams = models[randomSampler(random)]->params;
         models[i]->setParams(at::normal(sourceParams, GENETIC_STDDEV, torchGen));
-        std::cout << "params[" << i << "] = " << models[i]->params << std::endl;
+        // std::cout << "params[" << i << "] = " << models[i]->params << std::endl;
     }
 }

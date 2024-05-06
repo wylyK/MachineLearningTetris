@@ -11,13 +11,13 @@ class TetrisModelV1Trainer {
   public:
     static constexpr float GENETIC_STDDEV = .5;
     static constexpr int K_SAVED = 20;
-    static constexpr int GAMES_PER_ROUND = 1;
+    static constexpr int GAMES_PER_ROUND = 2;
   private:
     std::mt19937_64 random;
     torch::Generator torchGen;
     vector<TetrisModelV1 *> models;
     SimplifiedTetris::Game game;
-    size_t population;
+    int population;
   public:
     typedef std::mt19937_64::result_type seed_type;
     explicit TetrisModelV1Trainer(size_t population, seed_type seed);

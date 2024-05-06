@@ -70,6 +70,7 @@ void TetrisModelV1Trainer::trainRound() {
     std::uniform_int_distribution<size_t> randomSampler(0, K_SAVED);
     for (int i = K_SAVED; i < population; ++i) {
         torch::Tensor const & sourceParams = models[randomSampler(random)]->params;
-        models[i]->setParams(at::normal(sourceParams, TetrisModelV1::NUM_PARAMETERS, torchGen));
+        models[i]->setParams(at::normal(sourceParams, GENETIC_STDDEV, torchGen));
+        std::cout << "params[" << i << "] = " << models[i]->params << std::endl;
     }
 }

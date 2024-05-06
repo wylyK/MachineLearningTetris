@@ -11,7 +11,7 @@ class TetrisModelV1Trainer {
   public:
     static constexpr float GENETIC_STDDEV = .5;
     static constexpr int K_SAVED = 20;
-    static constexpr int GAMES_PER_ROUND = 2;
+    static constexpr int GAMES_PER_ROUND = 1;
   private:
     std::mt19937_64 random;
     torch::Generator torchGen;

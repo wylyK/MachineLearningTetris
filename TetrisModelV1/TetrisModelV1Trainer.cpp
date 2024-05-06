@@ -77,9 +77,14 @@ void TetrisModelV1Trainer::trainRound() {
     std::cout << "Mean rows of top " << K_SAVED << ": "
               << static_cast<float>(topKSumRows) / (K_SAVED * GAMES_PER_ROUND) << std::endl;
     std::cout << "Mean pieces of all: "
-              << static_cast<float>(allSumPieces) / (population * GAMES_PER_ROUND) << std::endl;
+              << static_cast<float>(allSumPieces) / (static_cast<float>(population) * GAMES_PER_ROUND) << std::endl;
     std::cout << "Mean rows of top all: "
-              << static_cast<float>(allSumRows) / (population * GAMES_PER_ROUND) << std::endl;
+              << static_cast<float>(allSumRows) / (static_cast<float>(population) * GAMES_PER_ROUND) << std::endl;
+    std::cout << "Best model params: {";
+    for (int i = 0; i < TetrisModelV1::NUM_PARAMETERS - 1; ++i) {
+        std::cout << models[idxs[0]]->params[i].item() << ", ";
+    }
+    std::cout << models[idxs[0]]->params[TetrisModelV1::NUM_PARAMETERS - 1].item() << "}" << std::endl;
 
     std::uniform_int_distribution<size_t> randomSampler(0, K_SAVED);
     for (int i = K_SAVED; i < population; ++i) {

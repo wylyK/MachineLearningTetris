@@ -62,7 +62,7 @@ namespace SimplifiedTetris {
   void Board::print() const {
       for (int i = Board::HEIGHT - 1; i >= 0; --i) {
           for (int j = 0; j < Board::WIDTH; ++j) {
-              std::cout << (int)board[i][j] << " ";
+              std::cout << COLOR_STRINGS.at(board[i][j]) << " ";
           }
           std::cout << std::endl;
       }

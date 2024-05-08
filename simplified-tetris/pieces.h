@@ -202,6 +202,18 @@ namespace SimplifiedTetris {
           {{0, 1}, {1, 0}, {1, 1}, {2, 0}}  // W
       }
   };
+
+  const std::unordered_map<Tetromino, std::string_view> COLOR_STRINGS = {
+      {Tetromino::null, "·"},
+      {Tetromino::O, "\u001b[33mO\u001b[0m"},
+      {Tetromino::I, "\u001b[36mO\u001b[0m"},
+      {Tetromino::T, "\u001b[35mO\u001b[0m"},
+      {Tetromino::L, "\u001b[31mO\u001b[0m"},
+      {Tetromino::J, "\u001b[34mO\u001b[0m"},
+      {Tetromino::S, "\u001b[32mO\u001b[0m"},
+      {Tetromino::Z, "\u001b[31mO\u001b[0m"}
+  };
+
 }
 
 #endif //SIMPLIFIED_TETRIS_PIECES_H

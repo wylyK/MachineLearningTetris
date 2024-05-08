@@ -66,7 +66,7 @@ std::tuple<int, int> playGame(TetrisModelV1 & model, SimplifiedTetris::Game & ga
         // std::cout << "scores = " << scores << std::endl;
         int const bestPlacement = torch::argmax(scores).item<int>();
         int const rowsCleared = game.doMove(placements[bestPlacement]);
-        game.getBoard().print();
+        // game.getBoard().print();
         ++numMoves;
         totalRowsCleared += rowsCleared;
         // std::cout << std::endl;
